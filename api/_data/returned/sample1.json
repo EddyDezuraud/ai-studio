@@ -1,0 +1,79 @@
+{
+    "colors": {
+        "primary": "#007bff",
+        "secondary": "#6c757d"
+    },
+    "body": {
+        "background": "#f8f9fa",
+        "color": "#495057",
+        "fontSize": "16px",
+        "fontFamily": "Arial",
+        "line-height": "1.5"
+    },
+    "form": {
+        "buttons": {
+            "primary": {
+                "height": "40px",
+                "width": "100px",
+                "padding": "10px 20px",
+                "borderRadius": "5px",
+                "background": "#007bff",
+                "border": "none",
+                "color": "#fff",
+                "fontSize": "16px",
+                "fontFamily": "Arial",
+                "boxShadow": "0 2px 4px 0 rgba(0, 0, 0, 0.2)",
+                "transition": "background 0.3s",
+                "classNames": ["btn", "btn-primary"],
+                "content": "Submit"
+            },
+            "secondary": {
+                "height": "40px",
+                "width": "100px",
+                "padding": "10px 20px",
+                "borderRadius": "5px",
+                "background": "#6c757d",
+                "border": "none",
+                "color": "#fff",
+                "fontSize": "16px",
+                "fontFamily": "Arial",
+                "boxShadow": "0 2px 4px 0 rgba(0, 0, 0, 0.2)",
+                "transition": "background 0.3s",
+                "classNames": ["btn", "btn-secondary"],
+                "content": "Cancel"
+            }
+        },
+        "input": {
+            "height": "40px",
+            "width": "100%",
+            "padding": "10px",
+            "borderRadius": "5px",
+            "border": "1px solid #ced4da",
+            "color": "#495057",
+            "fontSize": "16px",
+            "fontFamily": "Arial",
+            "boxShadow": "inset 0 1px 2px 0 rgba(0, 0, 0, 0.1)",
+            "transition": "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
+            "classNames": ["form-control"]
+        }
+    },
+    "texts": {
+        "title": {
+            "color": "#007bff",
+            "fontSize": "24px",
+            "fontFamily": "Arial"
+        },
+        "paragraph": {
+            "color": "#6c757d",
+            "fontSize": "16px",
+            "fontFamily": "Arial"
+        }
+    },
+    "block": {
+        "padding": "20px",
+        "borderRadius": "5px",
+        "background": "#fff",
+        "boxShadow": "0 2px 4px 0 rgba(0, 0, 0, 0.2)",
+        "border": "1px solid #ced4da"
+    }
+}
