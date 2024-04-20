@@ -12,6 +12,7 @@
   "dependencies": {
     "drizzle-orm": "^0.30.8",
     "express": "^4.19.2",
+    "ml-regression-polynomial": "^3.0.0",
     "postgres": "^3.4.4"
   },
   "devDependencies": {

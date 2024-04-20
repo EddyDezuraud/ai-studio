@@ -1,0 +1,45 @@
+interface Data {
+    height: Array<{ value: number; nb: number }>;
+    width: Array<{ value: number; nb: number }>;
+}
+
+const data = {
+    height: [
+        { value: 26, nb: 20 },
+        { value: 27, nb: 22 },
+        { value: 28, nb: 25 },
+        { value: 29, nb: 25 },
+        { value: 30, nb: 26 },
+        { value: 31, nb: 28 },
+        { value: 32, nb: 30 },
+        { value: 33, nb: 30 },
+        { value: 34, nb: 31 },
+        { value: 35, nb: 32 },
+        { value: 36, nb: 33 },
+        { value: 37, nb: 34 },
+        { value: 38, nb: 35 },
+        { value: 39, nb: 18 },
+        { value: 40, nb: 15 },
+        { value: 41, nb: 10 },
+        { value: 42, nb: 5 },
+        { value: 43, nb: 3 },
+        { value: 44, nb: 2 },
+        { value: 45, nb: 1 },
+    ],
+    width: [
+        { value: 50, nb: 10 },
+        { value: 55, nb: 12 },
+        { value: 60, nb: 15 },
+        { value: 65, nb: 18 },
+        { value: 70, nb: 20 },
+        { value: 75, nb: 22 },
+        { value: 80, nb: 23 },
+        { value: 85, nb: 24 },
+        { value: 90, nb: 25 },
+        { value: 95, nb: 26 },
+        { value: 100, nb: 28 },
+    ],
+} as Data;
+
+export type { Data };
+export default data;
