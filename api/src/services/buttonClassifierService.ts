@@ -7,7 +7,12 @@ const analyser = (nbToPredict: number) => {
     
     const regression = new PolynomialRegression(x, y, 3, {interceptAtZero: true});
     
-    return regression.predict(nbToPredict);
+    const predictedValue = regression.predict(nbToPredict);
+    const maxValue = Math.max(...y);
+    
+    const percentage = (predictedValue / maxValue) * 100;
+    
+    return percentage;
 }
 
 export default analyser;
