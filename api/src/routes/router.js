@@ -1,5 +1,5 @@
 import {Router} from "express";
 
-router.get("/", (req, res) => {
+Router.get("/", (req, res) => {
     res.send("Hello World!");
 });
