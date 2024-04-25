@@ -1,3 +1,5 @@
+import { Metadata } from "sharp";
+
 interface Colors {
   primary: string;
   secondary: string;
@@ -69,8 +71,16 @@ interface Block {
   boxShadow: string;
   border: string;
 }
-  
+
+interface Metadata {
+  name: string;
+  title: string;
+  description: string;
+  logos: string[];
+}
+
 interface StylesConfig {
+  metaData: Metadata;
   colors: Colors;
   body: Body;
   form: Form;
@@ -78,4 +88,4 @@ interface StylesConfig {
   block: Block;
 }
 
-export { StylesConfig, Colors, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block};
+export { StylesConfig, Colors, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata};

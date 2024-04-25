@@ -13,7 +13,10 @@
     "drizzle-orm": "^0.30.8",
     "express": "^4.19.2",
     "ml-regression-polynomial": "^3.0.0",
-    "postgres": "^3.4.4"
+    "postgres": "^3.4.4",
+    "puppeteer": "^22.7.0",
+    "sharp": "^0.33.3",
+    "tinycolor2": "^1.6.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.2",
