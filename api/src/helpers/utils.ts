@@ -20,6 +20,39 @@ const extractTagStyles = async (page: Page, tagName: string): Promise<CSSStyleDe
     return styles;
 }
 
+const extractAllTagStyles = async (page: Page, tagName: string): Promise<CSSStyleDeclaration[]> => {
+  await page.waitForSelector(tagName);
+
+  const element: ElementHandle<Element>[] = await page.$$(tagName);
+
+  if (!element || element.length === 0) {
+    throw new Error(`${tagName} element not found`);
+  }
+
+  const styles: CSSStyleDeclaration[] = [];
+
+  for (let i = 0; i < element.length; i++) {
+    const style = await element[i].evaluate((element) => {
+      return getComputedStyle(element);
+    });
+
+    styles.push(style);
+  }
+
+  return styles;
+}
+
+const extractMultipleTagStyles = async (page: Page, tagNames: string[]): Promise<CSSStyleDeclaration[]> => {
+  const styles: CSSStyleDeclaration[] = [];
+
+  for (let i = 0; i < tagNames.length; i++) {
+    const styles = await extractAllTagStyles(page, tagNames[i]);
+    styles.push(...styles);
+  }
+
+  return styles;
+}
+
 const isInternalLink = async (currentUrl: string, link: string): Promise<boolean> => {
     if(!link) {
         return false;
@@ -58,7 +91,7 @@ const launchBrowserAndOpenPage = async (url: string) => {
     return page;
 }
 
-const extractClientName = async (page: Page, url: string) => {
+const extractClientName = async (page: Page, url: string):Promise<string> => {
     let clientName = await page.evaluate(() => {
       const ogSiteNameMeta = document.querySelector('meta[property="og:site_name"]');
       return ogSiteNameMeta ? ogSiteNameMeta.getAttribute('content') : null;
@@ -127,7 +160,7 @@ function isWhiteOrNearWhite(color: string): boolean {
 }
 
 async function getBackgroundFromParents(page: Page, element: ElementHandle): Promise<string> {
-  let parentElement = element;
+  let parentElement:any = element;
   while (parentElement) {
       const parentStyles = await parentElement?.evaluate((element) => getComputedStyle(element));
       if (parentStyles.background !== 'transparent' && parentStyles.background !== 'none') {
@@ -136,6 +169,7 @@ async function getBackgroundFromParents(page: Page, element: ElementHandle): Pro
       if (parentStyles.backgroundColor !== 'transparent' || parentStyles.backgroundImage !== 'none') {
           return parentStyles.backgroundColor || parentStyles.backgroundImage;
       }
+      
       parentElement = await parentElement.evaluateHandle((element) => {
         return element.parentElement;
       }, parentElement);  }
@@ -209,6 +243,7 @@ const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
 export { 
   isInternalLink, 
   extractTagStyles, 
+  extractMultipleTagStyles,
   extractNameFromUrl, 
   validateUrl, 
   launchBrowserAndOpenPage, 
