@@ -1,5 +1,17 @@
 import { PolynomialRegression } from 'ml-regression-polynomial';
 import data, {Data} from '../../_data/elements/buttonPrimary';
+import { FormButtons } from '../types/StylesConfig';
+
+const buttonsAnalyzer = (buttons: CSSStyleDeclaration[]): FormButtons => {
+    
+    const primaryButtons = {};
+    const secondaryButtons = {};
+
+    return {
+        primary: primaryButtons,
+        secondary: secondaryButtons
+    }
+};
 
 const analyser = (nbToPredict: number) => {
     const x = data.width.map((d) => d.value);
@@ -15,4 +27,4 @@ const analyser = (nbToPredict: number) => {
     return percentage;
 }
 
-export default analyser;
+export {buttonsAnalyzer};
