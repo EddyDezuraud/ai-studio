@@ -1,5 +1,7 @@
-import {Router} from "express";
+import { Router } from "express";
+import { styleConfig } from "../config/styleConfig";
 
-Router.get("/", (req, res) => {
-    res.send("Hello World!");
+Router.get("/", async(req, res) => {
+    const data = await styleConfig();
+    res.json(data);
 });

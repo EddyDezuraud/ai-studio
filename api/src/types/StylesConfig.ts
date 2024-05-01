@@ -27,6 +27,7 @@ interface ButtonStyles {
   transition: string;
   classNames: string[];
   content: string;
+  htmlContent: string;
 }
   
 interface InputStyles {
@@ -77,6 +78,7 @@ interface Metadata {
   title: string;
   description: string;
   logos: string[];
+  favicon: string;
 }
 
 interface StylesConfig {

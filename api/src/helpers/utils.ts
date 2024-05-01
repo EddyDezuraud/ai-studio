@@ -1,6 +1,7 @@
 import puppeteer, {Page, ElementHandle} from 'puppeteer';
 import tinycolor from 'tinycolor2';
 import sharp from 'sharp';
+import { PolynomialRegression } from 'ml-regression-polynomial';
 
 import { Metadata } from "../types/StylesConfig";
 
@@ -75,12 +76,6 @@ const validateUrl = (url: string) => {
   return null;
 }
 
-const extractNameFromUrl = (url: string): string => {
-    let cleanedUrl = url.replace(/^https?:\/\/(?:www\.)?/, '');
-    cleanedUrl = cleanedUrl.replace(/\/?[a-z]+\/*$/, '');
-    const urlParts = cleanedUrl.split('.');
-    return urlParts.map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
-}
 
 const launchBrowserAndOpenPage = async (url: string) => {
     const browser = await puppeteer.launch({headless: true});
@@ -91,66 +86,6 @@ const launchBrowserAndOpenPage = async (url: string) => {
     return page;
 }
 
-const extractClientName = async (page: Page, url: string):Promise<string> => {
-    let clientName = await page.evaluate(() => {
-      const ogSiteNameMeta = document.querySelector('meta[property="og:site_name"]');
-      return ogSiteNameMeta ? ogSiteNameMeta.getAttribute('content') : null;
-    });
-  
-    if (!clientName) {
-      clientName = extractNameFromUrl(url);
-    }
-  
-    return clientName;
-}
-
-const extractClientLogo = async (page: Page, url: string):Promise<string[]> => { 
-    let clientLogos: string[] = []; 
-    
-    // find favicon
-    const favicon = await page.evaluate(() => {
-      const faviconLink = document.querySelector('link[rel="icon"]');
-      return faviconLink ? faviconLink.getAttribute('href') : null;
-    });
-
-    if (favicon) {
-      clientLogos.push(favicon);
-    }
-
-    const ogLogo = await page.evaluate(() => {
-        const ogImageMeta = document.querySelector('meta[property="og:image"]');
-        return ogImageMeta ? ogImageMeta.getAttribute('content') : null;
-    });
-
-    if (ogLogo) {
-        clientLogos.push(ogLogo);
-    }
-
-    // find img tags with src tag string containing "logo"
-    const imgTags = await page.evaluate(() => {
-        const imgElements = document.querySelectorAll('img');
-        return Array.from(imgElements).map((img) => img.src.toLowerCase().includes('logo') ? img.src : null);
-    });
-
-    imgTags.forEach((imgSrc) => {
-        if (imgSrc) {
-        clientLogos.push(imgSrc);
-        }
-    });
-
-
-    return clientLogos;
-}
-
-// extract client return Client
-const extractClient = async (page: Page, url: string): Promise<Metadata> => {
-  const client = {} as Metadata;
-
-  client.name = await extractClientName(page, url);
-  client.logos = await extractClientLogo(page, url);
-
-  return client;
-}
 
 function isWhiteOrNearWhite(color: string): boolean {
   const rgb = tinycolor(color).toRgb();
@@ -240,17 +175,29 @@ const isPhoto = async (imgSrc: string) => {
 
 const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
 
+const analyser = (nbToPredict: number, data) => {
+  const x = data.width.map((d) => d.value);
+  const y = data.width.map((d) => d.nb);
+  
+  const regression = new PolynomialRegression(x, y, 3, {interceptAtZero: true});
+  
+  const predictedValue = regression.predict(nbToPredict);
+  const maxValue = Math.max(...y);
+  
+  const percentage = (predictedValue / maxValue) * 100;
+  
+  return percentage;
+}
+
 export { 
   isInternalLink, 
   extractTagStyles, 
   extractMultipleTagStyles,
-  extractNameFromUrl, 
   validateUrl, 
   launchBrowserAndOpenPage, 
-  extractClientName, 
-  extractClient,
   isWhiteOrNearWhite, 
   getBackgroundFromParents,
   isPhoto,
-  sleep
+  sleep,
+  analyser
 };
