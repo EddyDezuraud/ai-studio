@@ -18,8 +18,8 @@ const styleConfig = async (url: URL): Promise<StylesConfig> => {
     //3. Extract body styles
 
     //4. Extract form styles
-    const computedButtons:CSSStyleDeclaration[] = await extractMultipleTagStyles(page, ["button","a"]); // Array of all buttons a div with class button
-    const buttons = buttonsAnalyzer(computedButtons);
+    // const computedButtons:CSSStyleDeclaration[] = await extractMultipleTagStyles(page, ["button","a"]); // Array of all buttons a div with class button
+    // const buttons = buttonsAnalyzer(computedButtons);
 
     //5. Extract text styles
 
