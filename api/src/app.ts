@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import routes from './routes/router';
 const app = express();
-const port = 3000;
+const port = 3033;
 
 app.use('/api', routes);
 
