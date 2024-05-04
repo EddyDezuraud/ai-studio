@@ -1,18 +1,19 @@
 import { Page } from 'puppeteer';
 import { Metadata } from '../types/StylesConfig';
+import { imageUrl } from '../helpers/utils';
 
 const extractClientLogo = async (page: Page, url: string):Promise<string[]> => { 
     let clientLogos: string[] = []; 
     
     // find favicon
-    const favicon = await page.evaluate(() => {
-      const faviconLink = document.querySelector('link[rel="icon"]');
-      return faviconLink ? faviconLink.getAttribute('href') : null;
-    });
+    // const favicon = await page.evaluate(() => {
+    //   const faviconLink = document.querySelector('link[rel="icon"]');
+    //   return faviconLink ? faviconLink.getAttribute('href') : null;
+    // });
 
-    if (favicon) {
-      clientLogos.push(favicon);
-    }
+    // if (favicon) {
+    //   clientLogos.push(imageUrl(favicon, url));
+    // }
 
     const ogLogo = await page.evaluate(() => {
         const ogImageMeta = document.querySelector('meta[property="og:image"]');
@@ -20,7 +21,7 @@ const extractClientLogo = async (page: Page, url: string):Promise<string[]> => {
     });
 
     if (ogLogo) {
-        clientLogos.push(ogLogo);
+        clientLogos.push(imageUrl(ogLogo, url));
     }
 
     // find img tags with src tag string containing "logo"
@@ -31,10 +32,9 @@ const extractClientLogo = async (page: Page, url: string):Promise<string[]> => {
 
     imgTags.forEach((imgSrc) => {
         if (imgSrc) {
-        clientLogos.push(imgSrc);
+            clientLogos.push(imageUrl(imgSrc, url));
         }
     });
-
 
     return clientLogos;
 };

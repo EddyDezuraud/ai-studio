@@ -3,7 +3,27 @@ import tinycolor from 'tinycolor2';
 import sharp from 'sharp';
 import { PolynomialRegression } from 'ml-regression-polynomial';
 
-import { Metadata } from "../types/StylesConfig";
+const imageUrl = (img: string, url: string): string => {
+
+  if (img.startsWith('data:image')) {
+    return img;
+  }
+
+  if (img.startsWith('http')) {
+    return img;
+  }
+
+  if (img.startsWith('//')) {
+    return `https:${img}`;
+  }
+
+  if (img.startsWith('/')) {
+    const baseUrl = url.split('/').slice(0, 3).join('/');
+    return `${baseUrl}${img}`;
+  }
+
+  return `${img}`;
+};
 
 const extractTagStyles = async (page: Page, tagName: string): Promise<CSSStyleDeclaration> => {
     await page.waitForSelector(tagName);
@@ -95,9 +115,9 @@ function isWhiteOrNearWhite(color: string): boolean {
 }
 
 async function getBackgroundFromParents(page: Page, element: ElementHandle): Promise<string> {
-  let parentElement:any = element;
+  let parentElement: any = element;
   while (parentElement) {
-      const parentStyles = await parentElement?.evaluate((element) => getComputedStyle(element));
+      const parentStyles = await parentElement?.evaluate((element: HTMLElement) => getComputedStyle(element));
       if (parentStyles.background !== 'transparent' && parentStyles.background !== 'none') {
           return parentStyles.background;
       }
@@ -105,9 +125,10 @@ async function getBackgroundFromParents(page: Page, element: ElementHandle): Pro
           return parentStyles.backgroundColor || parentStyles.backgroundImage;
       }
       
-      parentElement = await parentElement.evaluateHandle((element) => {
+      parentElement = await parentElement.evaluateHandle((element: HTMLElement) => {
         return element.parentElement;
-      }, parentElement);  }
+      }, parentElement);
+  }
   return '';
 };
 
@@ -171,26 +192,27 @@ const isPhoto = async (imgSrc: string) => {
     console.error(imgSrc, err);
     throw err;
   }
-}
+};
 
 const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
 
-const analyser = (nbToPredict: number, data) => {
+const analyser = (nbToPredict: number, data: { width: { value: number; nb: number }[] }) => {
   const x = data.width.map((d) => d.value);
   const y = data.width.map((d) => d.nb);
-  
-  const regression = new PolynomialRegression(x, y, 3, {interceptAtZero: true});
-  
+
+  const regression = new PolynomialRegression(x, y, 3, { interceptAtZero: true });
+
   const predictedValue = regression.predict(nbToPredict);
   const maxValue = Math.max(...y);
-  
+
   const percentage = (predictedValue / maxValue) * 100;
-  
+
   return percentage;
-}
+};
 
 export { 
   isInternalLink, 
+  imageUrl,
   extractTagStyles, 
   extractMultipleTagStyles,
   validateUrl, 

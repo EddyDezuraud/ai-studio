@@ -1,7 +1,7 @@
 <template>
     <header :class="$style.wrapper">
         <h1 :class="$style.label">Introducing <span>AI Studio</span></h1>
-        <h2 :class="$style.title">A new way to create</h2>
+        <h2 :class="$style.title">A new way to styleguide</h2>
     </header>
 </template>
 
@@ -9,7 +9,7 @@
 .wrapper {
     padding: 120px 0;
     text-align: center;
-    color: #140C41;
+    color: var(--dark);
 
     &::before {
         position: absolute;
@@ -29,7 +29,7 @@
 }
 
 .label {
-    color: #8D86AB;
+    color: var(--dark-100);
     font-size: 16px;
     font-weight: 500;
 

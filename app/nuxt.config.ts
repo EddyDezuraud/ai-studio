@@ -7,5 +7,8 @@ export default defineNuxtConfig({
     }
    }],
   ],
-  css: ['~/assets/css/reset.css'],
+  css: [
+    '~/assets/css/reset.css',
+    '~/assets/css/variables.css'
+  ],
 })

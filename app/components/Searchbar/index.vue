@@ -32,7 +32,6 @@ const isValidUrl = (urlString: string): boolean => {
 const submitForm = () => {
   if (isValidUrl(url.value)) {
     emit('submit', url.value)
-    url.value = ''
   } else {
     error.value = true;
   }
