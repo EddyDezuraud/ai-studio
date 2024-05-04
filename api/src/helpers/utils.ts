@@ -3,6 +3,15 @@ import tinycolor from 'tinycolor2';
 import sharp from 'sharp';
 import { PolynomialRegression } from 'ml-regression-polynomial';
 
+const getUserAgent = () => {
+  const agents = [
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    ]
+
+  const index = Math.floor(Math.random() * agents.length);
+  return agents[index]
+}
+
 const imageUrl = (img: string, url: string): string => {
 
   if (img.startsWith('//')) {
@@ -213,5 +222,6 @@ export {
   getBackgroundFromParents,
   isPhoto,
   sleep,
-  analyser
+  analyser,
+  getUserAgent
 };

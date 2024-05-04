@@ -7,7 +7,7 @@
         </div>
         <div :class="$style.content">
             <span :class="$style.title">
-                {{ title }}
+                {{ name }}
             </span>
             <p :class="$style.description">
                 {{ description }}
@@ -22,7 +22,7 @@ import type { Logo } from '@/types/StylesConfig';
 
 // title, description, image, logo are from props
 const props = defineProps<{
-    title: string;
+    name: string;
     description: string;
     image: string;
     logo: Logo;

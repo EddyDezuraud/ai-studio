@@ -1,6 +1,13 @@
 <template>
     <div :class="$style.wrapper">
-        <MetadataCard v-bind="metadata" />
+        <div :class="$style.line">
+            <MetadataCard v-bind="metadata" />
+            <div :class="$style.right">
+                <div></div>
+                <Colors :colors="config.colors.list" />
+            </div>
+        </div>
+        
     </div>
 </template>
 
@@ -16,7 +23,7 @@ const props = defineProps<Props>();
 
 const metadata = computed<Metadata>(() => {
     return {
-        title: props.config.metaData.title,
+        name: props.config.metaData.name,
         description: props.config.metaData.description,
         image: 'https://source.unsplash.com/random/800x600',
         logo: props.config.metaData.logos[0]
@@ -32,5 +39,23 @@ const metadata = computed<Metadata>(() => {
     width: 100%;
     margin: 0 auto;
     padding: 50px 0 100px;
+    gap: var(--bento-gap);
+}
+
+.line {
+    display: flex;
+    gap: var(--bento-gap);
+    width: 100%;
+}
+
+.right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--bento-gap);
+
+    > * {
+        flex: 1;
+    }
 }
 </style>

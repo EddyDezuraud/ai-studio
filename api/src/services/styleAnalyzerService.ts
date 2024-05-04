@@ -3,6 +3,7 @@ import puppeteer, {Page, ElementHandle} from 'puppeteer';
 import { extractMultipleTagStyles } from '../helpers/utils';
 import { buttonsAnalyzer } from './buttonClassifierService'
 import { getMetadata } from './metadataService';
+import { getColors } from './colorsService';
 
 const styleConfig = async (url: URL): Promise<StylesConfig> => {
 
@@ -16,6 +17,7 @@ const styleConfig = async (url: URL): Promise<StylesConfig> => {
     const metaData = await getMetadata(page, url.toString());
 
     //2. Extract main colors
+    const colors = await getColors(page);
 
     //3. Extract body styles
 
@@ -37,6 +39,7 @@ const styleConfig = async (url: URL): Promise<StylesConfig> => {
 
     return {
         metaData,
+        colors,
     } as StylesConfig;
 }
 

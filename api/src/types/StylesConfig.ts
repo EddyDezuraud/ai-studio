@@ -1,6 +1,7 @@
 interface Colors {
   primary: string;
   secondary: string;
+  list: string[];
 }
   
 interface Body {
@@ -78,12 +79,22 @@ interface Logo {
   type: "img" | "svg";
 }
 
+interface Linkedin {
+  url: string;
+  logo: string;
+  nbEmployees: number;
+}
+
+interface Socials {
+  linkedin?: Linkedin;
+}
+
 interface Metadata {
   name: string;
-  title: string;
   description: string;
   logos: Logo[];
   favicon: string;
+  socials: Socials;
 }
 
 interface StylesConfig {
@@ -95,4 +106,4 @@ interface StylesConfig {
   block: Block;
 }
 
-export { StylesConfig, Colors, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo};
+export { StylesConfig, Colors, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo, Linkedin, Socials};
