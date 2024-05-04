@@ -28,5 +28,8 @@ const metadata = computed<Metadata>(() => {
 <style lang="scss" module>
 .wrapper {
     display: flex;
+    max-width: 1330px;
+    width: 100%;
+    margin: 100px auto;
 }
 </style>
