@@ -1,3 +1,5 @@
+import { Metadata } from "sharp";
+
 interface Colors {
   primary: string;
   secondary: string;
@@ -71,11 +73,18 @@ interface Block {
   border: string;
 }
 
+interface Logo {
+  rate: number;
+  src: string;
+  alt: string;
+  type: "img" | "svg";
+}
+
 interface Metadata {
   name: string;
   title: string;
   description: string;
-  logos: string[];
+  logos: Logo[];
   favicon: string;
 }
 
@@ -88,4 +97,4 @@ interface StylesConfig {
   block: Block;
 }
 
-export type { StylesConfig, Colors, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata };
+export type { StylesConfig, Colors, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo};

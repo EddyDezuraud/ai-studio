@@ -1,9 +1,9 @@
 <template>
-
     <div :class="$style.wrapper">
         <div :class="$style.image" :style="`background: url(${image})`"></div>
         <div :class="$style.logo">
-            <img :src="logo" :alt="`Logo ${title}`">
+            <img v-if="logo.type === 'img'" :src="logo.src" :alt="`Logo ${title}`">
+            <div v-else :class=$style.svg v-html="logo.src"></div>
         </div>
         <div :class="$style.content">
             <span :class="$style.title">
@@ -15,17 +15,17 @@
         </div> 
 
     </div>
-
 </template>
 
 <script lang="ts" setup>
+import type { Logo } from '@/types/StylesConfig';
 
 // title, description, image, logo are from props
 const props = defineProps<{
     title: string;
     description: string;
     image: string;
-    logo: string;
+    logo: Logo;
 }>();
 
 </script>
@@ -33,5 +33,50 @@ const props = defineProps<{
 <style lang="scss" module>
 .wrapper {
     border-radius: var(--border-radius);
+    border: var(--border);
+    width: 525px;
+    overflow: hidden;
+}
+
+.image {
+    width: 100%;
+    height: 235px;
+}
+
+.logo {
+    margin: -65px 0 0 32px ;
+    width: 125px;
+    height: 125px;
+    border-radius: var(--border-radius);
+    padding: 10px;
+    background: white;
+    border: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .svg,
+    svg,
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+.content {
+    padding: 34px;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 900;
+}
+
+.description {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 500;
 }
 </style>

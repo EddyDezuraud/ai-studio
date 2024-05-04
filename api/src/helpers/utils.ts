@@ -5,14 +5,6 @@ import { PolynomialRegression } from 'ml-regression-polynomial';
 
 const imageUrl = (img: string, url: string): string => {
 
-  if (img.startsWith('data:image')) {
-    return img;
-  }
-
-  if (img.startsWith('http')) {
-    return img;
-  }
-
   if (img.startsWith('//')) {
     return `https:${img}`;
   }

@@ -30,6 +30,7 @@ const metadata = computed<Metadata>(() => {
     display: flex;
     max-width: 1330px;
     width: 100%;
-    margin: 100px auto;
+    margin: 0 auto;
+    padding: 50px 0 100px;
 }
 </style>
