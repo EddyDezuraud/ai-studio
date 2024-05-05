@@ -1,8 +1,13 @@
-import { Metadata } from "sharp";
+interface Color {
+  hex: string;
+  description: string;
+}
 
 interface Colors {
   primary: string;
   secondary: string;
+  website: Color[];
+  logo: Color[];
   list: string[];
 }
   
@@ -78,7 +83,7 @@ interface Logo {
   rate: number;
   src: string;
   alt: string;
-  type: "img" | "svg";
+  type: "img" | "svg" | "social";
 }
 
 interface Linkedin {

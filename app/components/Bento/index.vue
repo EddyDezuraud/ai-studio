@@ -22,11 +22,12 @@ interface Props {
 const props = defineProps<Props>();
 
 const metadata = computed<Metadata>(() => {
+    const logo = props.config.socials.linkedin?.logo ? {src: props.config.socials.linkedin?.logo, type: "social"} : props.config.metaData.logos[0];
     return {
         name: props.config.metaData.name,
         description: props.config.metaData.description,
         image: 'https://source.unsplash.com/random/800x600',
-        logo: props.config.metaData.logos[0]
+        logo
     };
 });
 

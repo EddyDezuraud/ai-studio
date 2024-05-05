@@ -1,6 +1,13 @@
+interface Color {
+  hex: string;
+  description: string;
+}
+
 interface Colors {
   primary: string;
   secondary: string;
+  website: Color[];
+  logo: Color[];
   list: string[];
 }
   
@@ -106,4 +113,4 @@ interface StylesConfig {
   socials: Socials;
 }
 
-export { StylesConfig, Colors, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo, Linkedin, Socials};
+export { StylesConfig, Colors, Color, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo, Linkedin, Socials};
