@@ -3,6 +3,7 @@ import * as cheerio from 'cheerio';
 import axios from 'axios';
 import { Metadata, Logo, Socials } from '../types/StylesConfig';
 import { imageUrl, getUserAgent } from '../helpers/utils';
+import { getLinkedinData } from './linkedinService';
 
 
 const extractNameFromUrl = (url: string): string => {
@@ -223,40 +224,11 @@ const getFavicon = async (page: Page): Promise<string> => {
 
 const getSocials = async (page: Page, name: string): Promise<Socials> => {
 
-    const googleRes = await axios.get(`https://www.google.com/search?q=${name} site:linkedin.com`, {
-        headers: {
-        "User-Agent": getUserAgent(),
-        },
-    });
-    const $ = cheerio.load(googleRes.data);
+    const linkedin = await getLinkedinData(name);
 
-    const linkedinUrl = $('a[href*="linkedin.com/company"]').attr('href');
-
-    console.log('linkedinUrl', linkedinUrl);
-
-    if(linkedinUrl) {
-
-    // transform https://linkedin.com url to https://fr.linkedin.com
-        const modifiedLinkedinUrl = linkedinUrl.replace('https://linkedin.com', 'https://fr.linkedin.com');
-
-        const linkedinRes = await axios.get(modifiedLinkedinUrl);
-
-        if(linkedinRes) {
-            const $$ = cheerio.load(linkedinRes.data);
-            const logoUrl = $$('img.logo__image').attr('src');
-            const nbEmployees = parseInt($$('a[data-control-name="topcard_see_all_employees"]').text().replace(/\D/g, ''));
-            return {
-                linkedin: {
-                    url: linkedinUrl,
-                    logo: logoUrl ? logoUrl : "",
-                    nbEmployees: nbEmployees
-                }
-            };
-        }
-        
-    } 
-
-    return {};
+    return {
+        linkedin
+    };
     
 };
 
@@ -267,15 +239,12 @@ const getMetadata = async (page: Page, url: string): Promise<Metadata> => {
         description: "",
         logos: [],
         favicon: "",
-        socials: {}
     };
 
     metadata.name = await extractClientName(page, url); 
     metadata.description = await getDescription(page);
     metadata.logos = await extractClientLogo(page, url);
     metadata.favicon = await getFavicon(page);
-
-    metadata.socials = await getSocials(page, metadata.name)
 
     return metadata;
 }

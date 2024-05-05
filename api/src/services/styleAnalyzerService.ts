@@ -4,6 +4,8 @@ import { extractMultipleTagStyles } from '../helpers/utils';
 import { buttonsAnalyzer } from './buttonClassifierService'
 import { getMetadata } from './metadataService';
 import { getColors } from './colorsService';
+import { get } from 'axios';
+import { getLinkedinData } from './linkedinService';
 
 const styleConfig = async (url: URL): Promise<StylesConfig> => {
 
@@ -29,17 +31,24 @@ const styleConfig = async (url: URL): Promise<StylesConfig> => {
 
     //6. Extract block styles
 
+    //7. extract socials
+    await browser.close();
+
+    const socials = {
+        linkedin: await getLinkedinData((metaData as any).companyName)
+    }
+
 
     // Return the styles config object
 
 
     // define primary and secondary buttons
     
-    
 
     return {
         metaData,
         colors,
+        socials
     } as StylesConfig;
 }
 

@@ -94,7 +94,6 @@ interface Metadata {
   description: string;
   logos: Logo[];
   favicon: string;
-  socials: Socials;
 }
 
 interface StylesConfig {
@@ -104,6 +103,7 @@ interface StylesConfig {
   form: Form;
   texts: Texts;
   block: Block;
+  socials: Socials;
 }
 
 export { StylesConfig, Colors, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo, Linkedin, Socials};
