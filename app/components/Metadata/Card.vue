@@ -1,9 +1,9 @@
 <template>
     <div :class="$style.wrapper">
-        <div :class="$style.image" :style="`background: url(${image})`"></div>
+        <div :class="$style.image" :style="`background-image: url(${image})`"></div>
         <div :class="[$style.logo, {[$style.full] : logo.type === 'social'}]">
             <div v-if="logo.type === 'svg'" :class=$style.svg v-html="logo.src"></div>
-            <img v-else :src="logo.src" :alt="`Logo ${title}`">
+            <img v-else :src="logo.src" :alt="`Logo ${name}`">
         </div>
         <div :class="$style.content">
             <span :class="$style.title">
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { Logo } from '@/types/StylesConfig';
+import type { Logo } from '@/types/Bento';
 
 // title, description, image, logo are from props
 const props = defineProps<{
@@ -41,6 +41,7 @@ const props = defineProps<{
 .image {
     width: 100%;
     height: 235px;
+    background-size: cover;
 }
 
 .logo {

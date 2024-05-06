@@ -29,3 +29,27 @@
     scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
     scrollbar-width: thin;
   }
+
+  /* Firefox */
+  .hide-x-bar {
+    box-sizing: border-box;
+    scrollbar-color: transparent transparent; /* thumb and track color */
+    scrollbar-width: 0px;
+  }
+  
+  .hide-x-bar::-webkit-scrollbar {
+    width: 0;
+  }
+  
+  .hide-x-bar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .hide-x-bar::-webkit-scrollbar-thumb {
+    background: transparent;
+    border: none;
+  }
+  
+  .hide-x-bar {
+    -ms-overflow-style: none;
+  }

@@ -3,6 +3,7 @@ import puppeteer from 'puppeteer';
 import { getMetadata, extractNameFromUrl } from './metadataService';
 import { getColors, getMostRepresentedColor } from './colorsService';
 import { getLinkedinData } from './linkedinService';
+import { getImages } from './imagesService';
 
 const styleConfig = async (url: URL): Promise<StylesConfig> => {
 
@@ -47,10 +48,8 @@ const styleConfig = async (url: URL): Promise<StylesConfig> => {
         linkedin: {logo: ''}
     }
 
-    if(metaData.name) {
-        socials.linkedin = await getLinkedinData(extractNameFromUrl(url.toString()));
-        console.log('socials.linkedin done ✅');
-    }
+    socials.linkedin = await getLinkedinData(metaData.name);
+    console.log('socials.linkedin done ✅');
     
     //8. Extract logo colors
     const lnkImage = socials.linkedin?.logo;
@@ -65,6 +64,10 @@ const styleConfig = async (url: URL): Promise<StylesConfig> => {
     }
     colors.list = colors.list.splice(0, 5);
 
+
+    //9. Extract images
+    const images = await getImages(metaData.name);
+
     // Return the styles config object
 
 
@@ -74,7 +77,8 @@ const styleConfig = async (url: URL): Promise<StylesConfig> => {
     return {
         metaData,
         colors,
-        socials
+        socials,
+        images
     } as StylesConfig;
 }
 

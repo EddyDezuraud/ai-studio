@@ -1,8 +1,13 @@
-interface Metadata {
-    title: string;
-    description: string;
-    image: string;
-    logo: { src: string; type: string };
+interface Logo {
+    src: string; 
+    type: string
 }
 
-export type { Metadata };
+interface Metadata {
+    name: string;
+    description: string;
+    image: string;
+    logo: Logo;
+}
+
+export type { Metadata, Logo };

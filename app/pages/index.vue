@@ -3,7 +3,8 @@
         <Header />
         <Searchbar @submit="onSubmitUrl" />
 
-        <Bento v-if="data" :config="data" />
+        <Loader v-if="isPending" />
+        <Bento v-else-if="data" :config="data" />
     </div>
 </template>    
 
@@ -13,6 +14,8 @@ import type {StylesConfig} from '@/types/StylesConfig';
 import { ref } from 'vue';
 
 const queryUrl = ref('') as Ref<string>;
+
+const isPending = computed(() => status.value === 'pending');
 
 const {data, status, error, execute} = await useFetch<StylesConfig>('/api', {
     baseURL: 'http://localhost:3033',

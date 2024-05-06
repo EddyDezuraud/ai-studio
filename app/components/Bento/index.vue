@@ -5,7 +5,7 @@
             <div :class="$style.right">
                 <div :class="$style.topRight">
                     <CompanyEmployees :employees />
-                    <div></div>
+                    <CompanyImages :images="images" />
                 </div>
                 <Colors :colors="config.colors" />
             </div>
@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
 import type { StylesConfig, Employee } from '@/types/StylesConfig';
-import type { Metadata } from '@/types/Bento';
+import type { Metadata, Logo } from '@/types/Bento';
 
 interface Props {
     config: StylesConfig;
@@ -25,11 +25,11 @@ interface Props {
 const props = defineProps<Props>();
 
 const metadata = computed<Metadata>(() => {
-    const logo = props.config.socials.linkedin?.logo ? {src: props.config.socials.linkedin?.logo, type: "social"} : props.config.metaData.logos[0];
+    const logo: Logo = props.config.socials.linkedin?.logo ? {src: props.config.socials.linkedin?.logo, type: "social"} : props.config.metaData.logos[0];
     return {
-        title: props.config.metaData.name,
+        name: props.config.metaData.name,
         description: props.config.metaData.description,
-        image: 'https://source.unsplash.com/random/800x600',
+        image: props.config.images.length > 0 ? props.config.images[0].src : 'https://unsplash.it/1200/630',
         logo
     };
 });
@@ -42,7 +42,11 @@ const employees = computed<Employee[]>(() => {
         if (!a.position && b.position) return 1;
         return a.name.localeCompare(b.name);
     });
-    
+});
+
+const images = computed(() => {
+    // return the images from the config expect the first one
+    return props.config.images.slice(1);
 });
 
 const primaryColor = computed(() => {

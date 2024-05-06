@@ -112,6 +112,12 @@ interface Metadata {
   favicon: string;
 }
 
+interface Image {
+  src: string;
+  alt: string;
+  source: string;
+}
+
 interface StylesConfig {
   metaData: Metadata;
   colors: Colors;
@@ -120,6 +126,7 @@ interface StylesConfig {
   texts: Texts;
   block: Block;
   socials: Socials;
+  images: Image[];
 }
 
-export type { StylesConfig, Colors, Color, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo, Linkedin, Socials, Employee};
+export type { StylesConfig, Colors, Color, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo, Linkedin, Socials, Employee, Image};

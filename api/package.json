@@ -27,7 +27,7 @@
     "postgres": "^3.4.4",
     "puppeteer": "^22.7.0",
     "request": "^2.88.2",
-    "scrape-google-images": "1.0.1-beta.4",
+    "scrape-google-images": "1.0.2",
     "sharp": "^0.33.3",
     "tinycolor2": "^1.6.0"
   },

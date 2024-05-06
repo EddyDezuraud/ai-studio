@@ -1,8 +1,5 @@
 import { Page } from 'puppeteer';
 import Vibrant from 'node-vibrant';
-import { Colors } from '../types/StylesConfig';
-import { extractColors } from 'extract-colors'
-import getPixels from 'get-pixels';
 import jimp from 'jimp';
 
 

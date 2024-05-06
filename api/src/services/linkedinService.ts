@@ -21,8 +21,6 @@ const getClientLinkedinName = async (clientName: string): Promise<string> => {
     const $ = cheerio.load(response.data);
     const linkedinUrl = $('.LC20lb').first().text();
 
-    console.log('linkedinUrl', linkedinUrl);
-
     // if several results, take the first one
     if (linkedinUrl.includes(' | ')) {
         return linkedinUrl.split(' | ')[0];
@@ -84,6 +82,8 @@ const getEmployeeList = async (companyName: string): Promise<Employee[]> => {
 }
 
 const getLinkedinData = async (companyName: string): Promise<Linkedin> => {
+
+    console.log('companyName', companyName);
 
     if(!companyName) return {url: '', logo: '', nbEmployees: 0, employees: []};
 

@@ -43,7 +43,7 @@ const avatar = (name: string) => {
     border-radius: var(--border-radius);
     border: var(--border);
     position: relative;
-
+    overflow: hidden;
 }
 
 .header {
