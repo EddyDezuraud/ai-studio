@@ -2,7 +2,7 @@ import * as cheerio from 'cheerio';
 import axios from 'axios';
 import puppeteer from 'puppeteer';
 
-import { Linkedin, Employees } from '../types/StylesConfig';
+import { Linkedin, Employee } from '../types/StylesConfig';
 import { scrapeImages } from 'scrape-google-images';
 import { getUserAgent } from '../helpers/utils';
 
@@ -50,7 +50,7 @@ const crawlForLogo = async (companyName: string) => {
     return '';
 };
 
-const getEmployeeList = async (companyName: string): Promise<Employees[]> => {
+const getEmployeeList = async (companyName: string): Promise<Employee[]> => {
     const query = `${companyName}+site%3Alinkedin.com%2Fin`;
     const url = `https://duckduckgo.com/?q=${query}&va=g&t=ha&ia=web`;
     const classSelector = '.eVNpHGjtxRBq_gLOfGDr';
@@ -66,17 +66,17 @@ const getEmployeeList = async (companyName: string): Promise<Employees[]> => {
         const elements = Array.from(document.querySelectorAll(classSelector));
         return elements.map(element => {
             const text = element.textContent;
-            if(!text) return {name: '', job: '', url: null, photo: ''}; 
+            if(!text) return {name: '', position: '', url: null, photo: ''}; 
             const parts = text.split(' - ')
             const name = parts[0];
             const job = parts.length > 2 ? parts[1] : '';
             return {
                 name: name,
-                job: job,
+                position: job,
                 url: element.getAttribute('href'),
                 photo: ''
             }
-        }) as Employees[];
+        }) as Employee[];
     }, classSelector);
 
     return employees;
@@ -94,7 +94,7 @@ const getLinkedinData = async (companyName: string): Promise<Linkedin> => {
         url: '',
         logo: logo ? logo : '',
         nbEmployees: 0,
-        employees: employees
+        employees
     }
 
 };

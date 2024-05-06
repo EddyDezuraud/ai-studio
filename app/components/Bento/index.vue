@@ -1,9 +1,12 @@
 <template>
-    <div :class="$style.wrapper">
+    <div :class="$style.wrapper" :style="{'--primary-color': primaryColor}">
         <div :class="$style.line">
             <MetadataCard v-bind="metadata" />
             <div :class="$style.right">
-                <div></div>
+                <div :class="$style.topRight">
+                    <CompanyEmployees :employees />
+                    <div></div>
+                </div>
                 <Colors :colors="config.colors" />
             </div>
         </div>
@@ -12,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { StylesConfig } from '@/types/StylesConfig';
+import type { StylesConfig, Employee } from '@/types/StylesConfig';
 import type { Metadata } from '@/types/Bento';
 
 interface Props {
@@ -24,11 +27,26 @@ const props = defineProps<Props>();
 const metadata = computed<Metadata>(() => {
     const logo = props.config.socials.linkedin?.logo ? {src: props.config.socials.linkedin?.logo, type: "social"} : props.config.metaData.logos[0];
     return {
-        name: props.config.metaData.name,
+        title: props.config.metaData.name,
         description: props.config.metaData.description,
         image: 'https://source.unsplash.com/random/800x600',
         logo
     };
+});
+
+const employees = computed<Employee[]>(() => {
+    const list = props.config.socials.linkedin?.employees || [];
+    // sort the ones with a position at first and then by name
+    return list.sort((a, b) => {
+        if (a.position && !b.position) return -1;
+        if (!a.position && b.position) return 1;
+        return a.name.localeCompare(b.name);
+    });
+    
+});
+
+const primaryColor = computed(() => {
+    return props.config.colors.primary;
 });
 
 </script>
@@ -53,6 +71,15 @@ const metadata = computed<Metadata>(() => {
     flex: 1;
     display: flex;
     flex-direction: column;
+    gap: var(--bento-gap);
+
+    > * {
+        flex: 1;
+    }
+}
+
+.topRight {
+    display: flex;
     gap: var(--bento-gap);
 
     > * {
