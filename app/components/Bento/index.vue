@@ -4,7 +4,7 @@
             <MetadataCard v-bind="metadata" />
             <div :class="$style.right">
                 <div></div>
-                <Colors :colors="config.colors.list" />
+                <Colors :colors="config.colors" />
             </div>
         </div>
         

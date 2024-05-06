@@ -68,7 +68,7 @@ const getMostRepresentedColor = async (base64Image: string): Promise<string[]> =
       }
 
       // Définir une plage pour les couleurs proches du blanc
-      const isNearWhite = r >= 251 && g >= 251 && b >= 251;
+      const isNearWhite = r >= 239 && g >= 239 && b >= 239;
       if (isNearWhite) {
         continue;
       }
@@ -92,7 +92,6 @@ const getMostRepresentedColor = async (base64Image: string): Promise<string[]> =
         colors.push(hexColor);
     }
 
-    console.log('topColors', colors);
     return colors;
 };
 

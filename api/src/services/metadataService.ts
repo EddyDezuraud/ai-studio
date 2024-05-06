@@ -1,10 +1,7 @@
 import { Page } from 'puppeteer';
-import * as cheerio from 'cheerio';
-import axios from 'axios';
 import { Metadata, Logo, Socials } from '../types/StylesConfig';
-import { imageUrl, getUserAgent } from '../helpers/utils';
-import { getLinkedinData } from './linkedinService';
-
+import { imageUrl } from '../helpers/utils';
+import { getLinkedinData, getClientLinkedinName } from './linkedinService';
 
 const extractNameFromUrl = (url: string): string => {
     let cleanedUrl = url.replace(/^https?:\/\/(?:www\.)?/, '');
@@ -164,48 +161,52 @@ const extractClientLogo = async (page: Page, url: string):Promise<Logo[]> => {
 };
 
 
+
+
 const extractClientName = async (page: Page, url: string):Promise<string> => {
-    let clientName = await page.evaluate(() => {
-        const ogSiteNameMeta = document.querySelector('meta[property="og:site_name"]');
+    return await getClientLinkedinName(extractNameFromUrl(url));
 
-        if(ogSiteNameMeta && ogSiteNameMeta.getAttribute('content')) {
-            return ogSiteNameMeta.getAttribute('content');
-        }
+    // let clientName = await page.evaluate(() => {
+    //     const ogSiteNameMeta = document.querySelector('meta[property="og:site_name"]');
 
-        const ogTitleMeta = document.querySelector('meta[property="og:title"]');
-        if(ogTitleMeta && ogTitleMeta.getAttribute('content')) {
-            return ogTitleMeta.getAttribute('content');
-        }
+    //     if(ogSiteNameMeta && ogSiteNameMeta.getAttribute('content')) {
+    //         return ogSiteNameMeta.getAttribute('content');
+    //     }
 
-        // return the title
-        return document.title;
-    });
+    //     const ogTitleMeta = document.querySelector('meta[property="og:title"]');
+    //     if(ogTitleMeta && ogTitleMeta.getAttribute('content')) {
+    //         return ogTitleMeta.getAttribute('content');
+    //     }
+
+    //     // return the title
+    //     return document.title;
+    // });
   
-    if (!clientName) {
-      clientName = extractNameFromUrl(url);
-    }
+    // if (!clientName) {
+    //   clientName = extractNameFromUrl(url);
+    // }
 
-    // check if domain is in the client name and pick only that part of the client name if it is
-    const domain = new URL(url).hostname.replace('www.', '');
-    const domainPattern = new RegExp(`(\\b${domain.split('.')[0]}\\b)`, 'i');
-    const match = clientName.toLowerCase().match(domainPattern);
-    if (match) {
-        const matchedDomain = match[0];
-        const startIndex = clientName.toLowerCase().indexOf(matchedDomain.toLowerCase());
-        const endIndex = startIndex + matchedDomain.length;
-        clientName = clientName.substring(startIndex, endIndex);
-    } else {
-        const separators = [" - ", " | ", " : ", ": "];
-        separators.forEach((separator) => {
-            if (clientName && clientName.includes(separator)) {
-                clientName = clientName.split(separator)[0].trim();
-            }
-        });
-    }
+    // // check if domain is in the client name and pick only that part of the client name if it is
+    // const domain = new URL(url).hostname.replace('www.', '');
+    // const domainPattern = new RegExp(`(\\b${domain.split('.')[0]}\\b)`, 'i');
+    // const match = clientName.toLowerCase().match(domainPattern);
+    // if (match) {
+    //     const matchedDomain = match[0];
+    //     const startIndex = clientName.toLowerCase().indexOf(matchedDomain.toLowerCase());
+    //     const endIndex = startIndex + matchedDomain.length;
+    //     clientName = clientName.substring(startIndex, endIndex);
+    // } else {
+    //     const separators = [" - ", " | ", " : ", ": "];
+    //     separators.forEach((separator) => {
+    //         if (clientName && clientName.includes(separator)) {
+    //             clientName = clientName.split(separator)[0].trim();
+    //         }
+    //     });
+    // }
     
     
   
-    return clientName;
+    // return clientName;
 };
 
 const getDescription = async (page: Page): Promise<string> => {
@@ -249,4 +250,4 @@ const getMetadata = async (page: Page, url: string): Promise<Metadata> => {
     return metadata;
 }
 
-export { getMetadata };
+export { getMetadata, extractNameFromUrl };

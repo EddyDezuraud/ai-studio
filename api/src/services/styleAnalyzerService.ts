@@ -1,6 +1,6 @@
 import { StylesConfig, Colors } from '../types/StylesConfig';
 import puppeteer from 'puppeteer';
-import { getMetadata } from './metadataService';
+import { getMetadata, extractNameFromUrl } from './metadataService';
 import { getColors, getMostRepresentedColor } from './colorsService';
 import { getLinkedinData } from './linkedinService';
 
@@ -48,7 +48,7 @@ const styleConfig = async (url: URL): Promise<StylesConfig> => {
     }
 
     if(metaData.name) {
-        socials.linkedin = await getLinkedinData(metaData.name)
+        socials.linkedin = await getLinkedinData(extractNameFromUrl(url.toString()));
         console.log('socials.linkedin done ✅');
     }
     
@@ -61,7 +61,7 @@ const styleConfig = async (url: URL): Promise<StylesConfig> => {
         colors.primary = logoColors[0];
         // push the logoColors.list to the top of the list
         colors.list = [...logoColors, ...colors.list];
-        colors.website = logoColors.map(color => ({hex: color, description: 'logo'}));
+        colors.logo = logoColors.map(color => ({hex: color, description: 'logo'}));
     }
     colors.list = colors.list.splice(0, 5);
 

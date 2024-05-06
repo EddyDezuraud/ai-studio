@@ -1,5 +1,6 @@
 interface Color {
   hex: string;
+  title?: string;
   description: string;
 }
 
@@ -86,10 +87,18 @@ interface Logo {
   type: "img" | "svg" | "social";
 }
 
+interface Employees {
+  name: string;
+  job: string;
+  url: string;
+  photo: string;
+}
+
 interface Linkedin {
   url: string;
   logo: string;
   nbEmployees: number;
+  employees: Employees[];
 }
 
 interface Socials {
@@ -113,4 +122,4 @@ interface StylesConfig {
   socials: Socials;
 }
 
-export type { StylesConfig, Colors, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo, Linkedin, Socials};
+export type { StylesConfig, Colors, Color, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo, Linkedin, Socials, Employees};
