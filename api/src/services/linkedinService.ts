@@ -49,8 +49,11 @@ const crawlForLogo = async (companyName: string) => {
 };
 
 const getEmployeeList = async (companyName: string): Promise<Employee[]> => {
-    const query = `${companyName}+site%3Alinkedin.com%2Fin`;
+    const formattedCompanyName = companyName.replace(/ /g, '+').replace('&', '%26');
+
+    const query = `${formattedCompanyName}+site%3Alinkedin.com%2Fin`;
     const url = `https://duckduckgo.com/?q=${query}&va=g&t=ha&ia=web`;
+
     const classSelector = '.eVNpHGjtxRBq_gLOfGDr';
 
 
