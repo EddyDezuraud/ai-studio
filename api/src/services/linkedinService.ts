@@ -86,8 +86,6 @@ const getEmployeeList = async (companyName: string): Promise<Employee[]> => {
 
 const getLinkedinData = async (companyName: string): Promise<Linkedin> => {
 
-    console.log('companyName', companyName);
-
     if(!companyName) return {url: '', logo: '', nbEmployees: 0, employees: []};
 
     const logo = await crawlForLogo(companyName);

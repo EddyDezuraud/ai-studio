@@ -1,6 +1,6 @@
 import { StylesConfig, Colors } from '../types/StylesConfig';
 import puppeteer from 'puppeteer';
-import { getMetadata, extractNameFromUrl } from './metadataService';
+import { getMetadata } from './metadataService';
 import { getColors, getMostRepresentedColor } from './colorsService';
 import { getLinkedinData } from './linkedinService';
 import { getImages } from './imagesService';

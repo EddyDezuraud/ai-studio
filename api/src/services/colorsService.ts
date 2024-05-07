@@ -1,28 +1,45 @@
 import { Page } from 'puppeteer';
 import Vibrant from 'node-vibrant';
 import jimp from 'jimp';
+import { rgbToHsl, hslToRgb, rgbToHex, rgbStringToRgbArray } from '../helpers/utils';
 
+const rgbStringToHex = (rgb: string): string => {
+    if(!rgb) return rgb;
+    const [r, g, b] = rgbStringToRgbArray(rgb);
+    return rgbToHex(r, g, b);
+}
 
-const filterSameColors = (colors: [string, number][], mainColor: string): [string, number][] => {
+const filterSameColors = (colors: string[], mainColor: string): {main: string, colors: string[]} => { 
+    const [mainR, mainG, mainB] = rgbStringToRgbArray(mainColor);
+    const mainHsl = rgbToHsl(mainR, mainG, mainB);
+    const threshold = 10;
 
-    const [mainR, mainG, mainB] = mainColor.split(',').map(Number);
+    // list of close hue colors from the main color
+    const closeHueColors = colors.filter((color) => {
+        // check if the hue is close to the main color hue
 
-    const filteredColors = colors.filter(([colorString]) => {
-        const [r, g, b] = colorString.split(',').map(Number);
+        const [r, g, b] = rgbStringToRgbArray(color);
+        const hsl = rgbToHsl(r, g, b);
 
-        // s'il s'agit de la main couleur, la garder
-        if (colorString === mainColor) {
-            return true;
-        }
-
-        // Vérifier si la couleur est proche de la couleur principale
-        const isNotNearMainColor = Math.abs(r - mainR) > 10 || Math.abs(g - mainG) > 10 || Math.abs(b - mainB) > 10;
-        
-        return isNotNearMainColor;
+        return Math.abs(hsl[0] - mainHsl[0]) < threshold;
     });
 
-    return filteredColors;
+    // remove close hue colors from the list
+    const filteredColors = colors.filter((color) => !closeHueColors.includes(color));
 
+    const sortedCloseHueColors = closeHueColors.sort((a, b) => {
+        // convert to hsl to sort by saturation
+        const [r1, g1, b1] = rgbStringToRgbArray(a[0]);
+        const [r2, g2, b2] = rgbStringToRgbArray(b[0]);
+        const hsl1 = rgbToHsl(r1, g1, b1);
+        const hsl2 = rgbToHsl(r2, g2, b2);
+
+        return (hsl2[1] - hsl2[2]) - (hsl1[1] - hsl1[2]);
+    });
+    
+    const main = sortedCloseHueColors[0];
+
+    return { main, colors: filteredColors };
 }
 
 /**
@@ -32,24 +49,12 @@ const filterSameColors = (colors: [string, number][], mainColor: string): [strin
  */
 const getMostRepresentedColor = async (base64Image: string): Promise<string[]> => {
 
-    const colors: string[] = [];
-
-    // check if the image is a base64 image
-    if (!base64Image.startsWith('data:image/')) {
-
-        // console log des premiers caractères de l'image
-        console.log('base64Image', base64Image.slice(0, 50));
-
-      return colors;
-    }
+    if(!base64Image) return new Array(3).fill('');
 
     const image = await jimp.read(Buffer.from(base64Image.split(',')[1], 'base64'));
 
-    // Redimensionner l'image à 40x40
-    const resizedImage = image.resize(200, 200);
-  
     // Obtenir les pixels de l'image redimensionnée
-    const pixels = new Uint8ClampedArray(resizedImage.bitmap.data);
+    const pixels = new Uint8ClampedArray(image.bitmap.data);
   
     const colorCounts: { [color: string]: number } = {};
   
@@ -76,21 +81,14 @@ const getMostRepresentedColor = async (base64Image: string): Promise<string[]> =
   
     const sortedColors = Object.entries(colorCounts).sort((a, b) => b[1] - a[1]);
 
-    const colorsW1 = filterSameColors(sortedColors, sortedColors[0][0]);
-    const colorsW2 = filterSameColors(colorsW1, colorsW1[1][0]);
-    const colorsW3 = filterSameColors(colorsW2, colorsW2[2][0]);
+    const colorsToKeep = sortedColors.map(([color]) => color);
 
-    for (let i = 0; i < 3 && i < colorsW3.length; i++) {
-        const [colorString] = colorsW3[i];
-        const hexColor = colorString.replace(/rgb\((\d+), (\d+), (\d+)\)/, (_, r, g, b) =>
-            `#${Number(r).toString(16).padStart(2, '0')}${Number(g).toString(16).padStart(2, '0')}${Number(b).toString(16).padStart(2, '0')}`
-        );
+    const { main: main1, colors: colorsW1 } = filterSameColors(colorsToKeep, colorsToKeep[0]);
+    const { main: main2, colors: colorsW2 } = filterSameColors(colorsW1, colorsW1[1]);
+    const { main: main3 } = filterSameColors(colorsW2, colorsW2[2]);
 
-        colors.push(hexColor);
-    }
-
-    return colors;
-};
+    return [rgbStringToHex(main1), rgbStringToHex(main2), rgbStringToHex(main3)];
+}; 
 
 
 const getColors = async (page: Page): Promise<string[]> => {

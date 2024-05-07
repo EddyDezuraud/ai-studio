@@ -6,7 +6,9 @@ const getImages = async (name: string): Promise<Image[]> => {
     const query = `${name}+office+pictures`;
 
     const options = {
-        limit: 5
+        limit: 5,
+        imgData: false,
+        metadata: false
     };
 
     const images = await scrapeImages(query, options)

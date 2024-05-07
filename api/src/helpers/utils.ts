@@ -211,6 +211,104 @@ const analyser = (nbToPredict: number, data: { width: { value: number; nb: numbe
   return percentage;
 };
 
+const rgbToHsl = (r: number, g: number, b: number): [number, number, number] => {
+    // Convert RGB values from 0-255 range to 0-1 range
+    r /= 255;
+    g /= 255;
+    b /= 255;
+  
+    // Find the maximum and minimum values among R, G, and B
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+  
+    // Calculate the Luminance (l) value
+    let l = (max + min) / 2;
+  
+    // Initialize Hue (h) and Saturation (s) values
+    let h = 0;
+    let s = 0;
+  
+    // Calculate Saturation (s) value
+    if (max !== min) {
+      const delta = max - min;
+      s = l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+  
+      // Calculate Hue (h) value
+      switch (max) {
+        case r:
+          h = (g - b) / delta + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / delta + 2;
+          break;
+        case b:
+          h = (r - g) / delta + 4;
+          break;
+      }
+  
+      h /= 6;
+    }
+  
+    // Convert Hue (h), Saturation (s), and Luminance (l) values to ranges
+    h = Math.round(h * 360);
+    s = Math.round(s * 100);
+    l = Math.round(l * 100);
+
+    return [h, s, l];
+};
+const rgbToHex = (r: number, g: number, b: number) => {
+    if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+        throw new Error("Les valeurs RGB doivent être comprises entre 0 et 255.");
+    }
+
+    const toHex = (value: number): string => {
+        const hex = value.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+    };
+
+    const hexR = toHex(r);
+    const hexG = toHex(g);
+    const hexB = toHex(b);
+
+    const hexColor = `#${hexR}${hexG}${hexB}`;
+
+    return hexColor;
+};
+
+const hslToRgb = (h: number, s: number, l: number) => {
+  let r, g, b;
+
+  if (s === 0) {
+    r = g = b = l; // Couleur achromatique
+  } else {
+    const hue2rgb = (p: number, q: number, t: number) => {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    };
+
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
+  }
+
+  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
+
+const hslToHex = (h: number, s: number, l: number) => {
+  const rgb = hslToRgb(h, s, l);
+  return rgbToHex(rgb[0], rgb[1], rgb[2]);
+};
+
+const rgbStringToRgbArray = (rgbString: string): number[] => {
+  return rgbString.replace('rgb(', '').replace(')', '').split(',').map(Number);
+}
+
 export { 
   isInternalLink, 
   imageUrl,
@@ -223,5 +321,10 @@ export {
   isPhoto,
   sleep,
   analyser,
-  getUserAgent
+  getUserAgent,
+  rgbToHsl,
+  hslToHex,
+  rgbToHex,
+  hslToRgb,
+  rgbStringToRgbArray
 };
