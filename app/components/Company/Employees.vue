@@ -64,7 +64,7 @@ const avatar = (name: string) => {
 }
 
 .list {
-    max-height: 250px;
+    max-height: 442px;
     overflow: auto;
     li {
         list-style-type: none;
@@ -131,7 +131,7 @@ const avatar = (name: string) => {
 }
 
 .position {
-    color: var(--dark-100);
+    color: var(--dark-900);
     font-size: 12px;
 }
 
@@ -139,7 +139,7 @@ const avatar = (name: string) => {
     width: 30px;
     aspect-ratio: 1/1;
     border-radius: 50%;
-    background-color: var(--primary-color);
+    background-color: var(--brand-color-primary);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -179,8 +179,7 @@ const avatar = (name: string) => {
     display: block;
     padding: 5px 15px;
     font-size: 12px;
-    // border: var(--border);
-    background: var(--primary-color);
+    background: var(--brand-color-primary);
     font-weight: 500;
     color: white;
     border-radius: var(--border-radius);

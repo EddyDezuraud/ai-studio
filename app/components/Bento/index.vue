@@ -4,11 +4,13 @@
             <MetadataCard v-bind="metadata" />
             <div :class="$style.right">
                 <div :class="$style.topRight">
-                    <CompanyEmployees :employees :linkedin-url="linkedinUrl" />
                     <CompanyImages :images="images" />
+                    <CompanyEmployees :employees :linkedin-url="linkedinUrl" />
                 </div>
-                <Colors :colors="config.colors" />
             </div>
+        </div>
+        <div>
+            <Colors :colors="config.colors" />
         </div>
         
     </div>
@@ -62,6 +64,7 @@ const primaryColor = computed(() => {
 <style lang="scss" module>
 .wrapper {
     display: flex;
+    flex-direction: column;
     max-width: 1330px;
     width: 100%;
     margin: 0 auto;

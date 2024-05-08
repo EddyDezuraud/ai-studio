@@ -12,11 +12,11 @@
         </button>  
     </form>
     <div :class="$style.tabs">
-      <button @click="onChangeMode('url')" :class="[$style.tab, {[$style.active] : mode === 'url'}]">
-        Search by URL
-      </button>
       <button @click="onChangeMode('name')" :class="[$style.tab, {[$style.active] : mode === 'name'}]">
         Search by name
+      </button>
+      <button @click="onChangeMode('url')" :class="[$style.tab, {[$style.active] : mode === 'url'}]">
+        Search by URL
       </button>
     </div>
   </div>
@@ -33,7 +33,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const query = ref('')
-const mode = ref('url');
+const mode = ref('name');
 const error = ref(false);
 
 const emit = defineEmits(['submit'])
@@ -123,7 +123,7 @@ input {
   padding: 8px 12px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--dark-100);
+  color: var(--dark-900);
 
   &.active {
     color: var(--dark);

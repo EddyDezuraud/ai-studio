@@ -99,15 +99,15 @@ const styleConfig = async (query: string, mode:'url' | 'name', lang: string): Pr
     const timeSpent = Date.now() - time;
     console.log(`Results in : ${timeSpent}ms`);
 
-    if(!metaData.description) {
-        const companyDescription = await getCompanyDescription(metaData.name);
+    // if(!metaData.description) {
+    //     const companyDescription = await getCompanyDescription(metaData.name);
 
-        if(companyDescription) {
-            metaData.description = companyDescription;
-        }
-        const newTimeSpent = Date.now() - time;
-        console.log('companyDescription done ✅', newTimeSpent);
-    }
+    //     if(companyDescription) {
+    //         metaData.description = companyDescription;
+    //     }
+    //     const newTimeSpent = Date.now() - time;
+    //     console.log('companyDescription done ✅', newTimeSpent);
+    // }
 
     return {
         metaData,

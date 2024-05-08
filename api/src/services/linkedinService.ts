@@ -28,7 +28,6 @@ const getClientLinkedinName = async (clientName: string): Promise<string> => {
     return linkedinUrl;
 }
 
-
 const crawlForLogo = async (companyName: string): Promise<{logo: string, linkedinUrl: string}> => {
 
     const url = `https://www.bing.com/images/search?q=${companyName}+logo+site%3Alinkedin.com&qs=n&form=QBIR&qft=+filterui%3Aimagesize-custom_200_200&sp=-1&lq=0&pq=${companyName}+logo+site%3Alinkedin.com`

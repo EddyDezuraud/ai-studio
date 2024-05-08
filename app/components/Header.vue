@@ -19,7 +19,7 @@
         width: 1000px;
         aspect-ratio: 1/1;
         border-radius: 50%;
-        background: radial-gradient(#8867FD, #8867FD00, #8867FD00);
+        background: radial-gradient(var(--brand-color-primary), var(--brand-color-primary-0), var(--brand-color-primary-0));
         transform: translate(-50%, -50%);
         filter: blur(20px);
         opacity: 0.2;
@@ -29,7 +29,7 @@
 }
 
 .label {
-    color: var(--dark-100);
+    color: var(--dark-900);
     font-size: 16px;
     font-weight: 500;
 
