@@ -2,8 +2,6 @@ import puppeteer, {Page, ElementHandle} from 'puppeteer';
 import tinycolor from 'tinycolor2';
 import sharp from 'sharp';
 import { PolynomialRegression } from 'ml-regression-polynomial';
-import axios, { AxiosResponse } from 'axios';
-import fs from 'fs';
 
 const getUserAgent = () => {
   const agents = [

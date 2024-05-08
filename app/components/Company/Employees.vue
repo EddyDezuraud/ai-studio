@@ -17,7 +17,7 @@
             </li>
         </ul>
         <footer :class="$style.footer">
-            <a :class="$style.footerBtn" href="https://linkedin.com" target="_blank">See all employees</a>
+            <a :class="$style.footerBtn" :href="linkedinUrl" target="_blank">See all employees</a>
         </footer>
     </div>
 </template>
@@ -26,10 +26,11 @@
 import type { Employee } from '@/types/StylesConfig';
 
 interface Props {
-    employees: Employee[]
+    employees: Employee[],
+    linkedinUrl: string
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 
 const avatar = (name: string) => {
     const names = name.split(' ');

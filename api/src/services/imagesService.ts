@@ -18,6 +18,8 @@ const getImages = async (name: string, lang: string): Promise<Image[]> => {
     const terms = searchTermsList(lang);
 
     const query = `${name}+${terms}`;
+    
+    const url = `https://www.google.com/search?q=${query}&tbm=isch`;
 
     const options = {
         limit: 5,

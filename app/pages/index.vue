@@ -13,6 +13,11 @@
 import type {StylesConfig} from '@/types/StylesConfig';
 import { ref } from 'vue';
 
+useHead({
+  title: 'Studio AI - Styleguide bento research',
+})
+
+
 const queryUrl = ref('') as Ref<string>;
 
 const isPending = computed(() => status.value === 'pending');

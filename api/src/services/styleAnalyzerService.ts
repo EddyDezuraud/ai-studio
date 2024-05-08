@@ -4,6 +4,7 @@ import { getMetadata } from './metadataService';
 import { getColors, getMostRepresentedColor } from './colorsService';
 import { getLinkedinData } from './linkedinService';
 import { getImages } from './imagesService';
+import { getCompanyDescription } from './companyService';
 
 const styleConfig = async (url: URL, lang: string): Promise<StylesConfig> => {
 
@@ -79,6 +80,15 @@ const styleConfig = async (url: URL, lang: string): Promise<StylesConfig> => {
     const timeSpent = Date.now() - time;
     console.log(`Results in : ${timeSpent}ms`);
 
+    if(!metaData.description) {
+        const companyDescription = await getCompanyDescription(metaData.name);
+
+        if(companyDescription) {
+            metaData.description = companyDescription;
+        }
+        const newTimeSpent = Date.now() - time;
+        console.log('companyDescription done ✅', newTimeSpent);
+    }
 
     return {
         metaData,

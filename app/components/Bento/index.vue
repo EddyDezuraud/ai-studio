@@ -4,7 +4,7 @@
             <MetadataCard v-bind="metadata" />
             <div :class="$style.right">
                 <div :class="$style.topRight">
-                    <CompanyEmployees :employees />
+                    <CompanyEmployees :employees :linkedin-url="linkedinUrl" />
                     <CompanyImages :images="images" />
                 </div>
                 <Colors :colors="config.colors" />
@@ -42,6 +42,10 @@ const employees = computed<Employee[]>(() => {
         if (!a.position && b.position) return 1;
         return a.name.localeCompare(b.name);
     });
+});
+
+const linkedinUrl = computed(() => {
+    return props.config.socials.linkedin?.url || 'https://linkedin.com';
 });
 
 const images = computed(() => {
