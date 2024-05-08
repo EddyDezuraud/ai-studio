@@ -1,6 +1,6 @@
 const getCompanyDescription = async (companyName: string): Promise<string> => {
     
-    const AWANLLM_API_KEY = '49fc2eb1-7bc6-4ef3-a15e-82f17d33604f';
+    const AWANLLM_API_KEY = '';
 
     const res = await fetch("https://api.awanllm.com/v1/chat/completions", {
         method: "POST",

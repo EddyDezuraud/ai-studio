@@ -1,5 +1,6 @@
 <template>
-    <form @submit.prevent="submitForm" :class="$style.wrapper">
+  <div :class="$style.wrapper">
+    <form @submit.prevent="submitForm" :class="$style.form">
         <input v-model="url" type="text" placeholder="Search for a url" />
         <button :class="$style.button">
             <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -9,10 +10,26 @@
             </svg>
         </button>  
     </form>
+    <div :class="$style.tabs">
+      <button :class="$style.tab">
+        Search by URL
+      </button>
+      <button :class="$style.tab">
+        Search by name
+      </button>
+    </div>
+  </div>
+    
 </template> 
 
 <script setup lang="ts">
 import { ref } from 'vue'
+
+interface Props {
+    pending: boolean
+}
+
+const props = defineProps<Props>()
 
 const url = ref('')
 const error = ref(false);
@@ -30,6 +47,8 @@ const isValidUrl = (urlString: string): boolean => {
 }
 
 const submitForm = () => {
+  if(props.pending) return;
+  
   if (isValidUrl(url.value)) {
     emit('submit', url.value)
   } else {
