@@ -1,3 +1,8 @@
+import * as cheerio from 'cheerio';
+import axios from 'axios';
+
+import { getUserAgent } from '../helpers/utils';
+
 const getCompanyDescription = async (companyName: string): Promise<string> => {
     
     const AWANLLM_API_KEY = '';
@@ -18,6 +23,26 @@ const getCompanyDescription = async (companyName: string): Promise<string> => {
 
     const data = await res.json();
     return data?.choices[0]?.message?.content;
+};
+
+
+const getWebsite = async (companyName: string): Promise<string> => {
+    // Use cheerio to search google results with query "companyName"
+    const query = `${companyName} site officiel`;
+    const searchUrl = `https://www.google.com/search?q=${query}`;
+
+    const response = await axios.get(searchUrl, {
+        headers: {
+            'User-Agent': getUserAgent()
+        }
+    });
+
+    const $ = cheerio.load(response.data);
+    const url = $('.yuRUbf a').first().attr('href');
+
+    console.log(url);
+
+    return url ? url : '';    
 }
 
-export { getCompanyDescription };
+export { getCompanyDescription, getWebsite };

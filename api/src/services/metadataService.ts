@@ -233,7 +233,7 @@ const getSocials = async (page: Page, name: string): Promise<Socials> => {
     
 };
 
-const getMetadata = async (page: Page, url: string): Promise<Metadata> => {
+const getMetadata = async (page: Page, url: string, companyName: string): Promise<Metadata> => {
 
     const metadata: Metadata = {
         name: "",
@@ -242,7 +242,7 @@ const getMetadata = async (page: Page, url: string): Promise<Metadata> => {
         favicon: "",
     };
 
-    metadata.name = await extractClientName(page, url); 
+    metadata.name = companyName ? companyName : await extractClientName(page, url); 
     metadata.description = await getDescription(page);
     metadata.logos = await extractClientLogo(page, url);
     metadata.favicon = await getFavicon(page);

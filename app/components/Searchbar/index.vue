@@ -12,10 +12,10 @@
         </button>  
     </form>
     <div :class="$style.tabs">
-      <button @click="mode = 'url'" :class="[$style.tab, {[$style.active] : mode === 'url'}]">
+      <button @click="onChangeMode('url')" :class="[$style.tab, {[$style.active] : mode === 'url'}]">
         Search by URL
       </button>
-      <button @click="mode = 'name'" :class="[$style.tab, {[$style.active] : mode === 'name'}]">
+      <button @click="onChangeMode('name')" :class="[$style.tab, {[$style.active] : mode === 'name'}]">
         Search by name
       </button>
     </div>
@@ -51,11 +51,17 @@ const isValidUrl = (urlString: string): boolean => {
 const submitForm = () => {
   if(props.pending) return;
 
-  if (isValidUrl(query.value)) {
+  if (mode.value === 'name' || isValidUrl(query.value)) {
     emit('submit', {query: query.value, mode: mode.value})
   } else {
     error.value = true;
   }
+};
+
+const onChangeMode = (res: 'url' | 'name') => {
+  mode.value = res;
+  query.value = '';
+  error.value = false;
 }
 </script>
 

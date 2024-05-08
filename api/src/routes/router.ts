@@ -4,9 +4,12 @@ import { Router } from 'express';
 const router: Router = Router();
 
 router.get("/", async(req, res) => {
-    const url = new URL(req.query.url as string);
+    console.log('router /styleConfig');
+
+    const query = req.query.url as string;
+    const mode = req.query.mode as 'url' | 'name';
     const lang = req.query.lang as string;
-    const data = await styleConfig(url, lang);
+    const data = await styleConfig(query, mode, lang);
     res.json(data);
 });
 

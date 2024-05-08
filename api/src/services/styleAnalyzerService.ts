@@ -4,9 +4,28 @@ import { getMetadata } from './metadataService';
 import { getColors, getMostRepresentedColor } from './colorsService';
 import { getLinkedinData } from './linkedinService';
 import { getImages } from './imagesService';
-import { getCompanyDescription } from './companyService';
+import { getCompanyDescription, getWebsite } from './companyService';
 
-const styleConfig = async (url: URL, lang: string): Promise<StylesConfig> => {
+const styleConfig = async (query: string, mode:'url' | 'name', lang: string): Promise<StylesConfig> => {
+
+    let website = '';
+    let companyName = '';
+
+    console.log('styleConfig', query, mode, lang);
+
+    if(mode === 'name') {
+        console.log('Check for website');
+        companyName = query;
+        const website = await getWebsite(query);
+        if(website) {
+            query = website;
+        } else {
+            throw new Error('No website found');
+        }
+        console.log('✅ website found');
+    } else {
+        website = query;
+    }
 
     const time = Date.now();
 
@@ -14,10 +33,10 @@ const styleConfig = async (url: URL, lang: string): Promise<StylesConfig> => {
         // headless: false
     });
     const page = await browser.newPage();
-    await page.goto(url.toString());
+    await page.goto(query);
 
     //1. Extract metadata
-    const metaData = await getMetadata(page, url.toString());
+    const metaData = await getMetadata(page, query, companyName);
     console.log('metaData done ✅');
 
     //2. Extract main colors

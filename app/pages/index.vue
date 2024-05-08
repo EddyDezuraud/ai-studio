@@ -30,11 +30,15 @@ const {data, status, error, execute} = await useFetch<StylesConfig>('/api', {
         mode,
         lang: 'fr'
     },
-    immediate: false
+    immediate: false,
+    deep: false,
+    server: true
 });
 
 const onSubmitUrl = (res: {query: string, mode: string}) => {
     queryUrl.value = res.query;
+    mode.value = res.mode;
+    console.log('submitting...');
     execute();
 };
 </script>
