@@ -5,7 +5,9 @@ import { getColors, getMostRepresentedColor } from './colorsService';
 import { getLinkedinData } from './linkedinService';
 import { getImages } from './imagesService';
 
-const styleConfig = async (url: URL): Promise<StylesConfig> => {
+const styleConfig = async (url: URL, lang: string): Promise<StylesConfig> => {
+
+    const time = Date.now();
 
     const browser = await puppeteer.launch({
         // headless: false
@@ -66,12 +68,16 @@ const styleConfig = async (url: URL): Promise<StylesConfig> => {
 
 
     //9. Extract images
-    const images = await getImages(metaData.name);
+    const images = await getImages(metaData.name, lang);
 
     // Return the styles config object
 
 
     // define primary and secondary buttons
+
+    // console log time spent
+    const timeSpent = Date.now() - time;
+    console.log(`Results in : ${timeSpent}ms`);
 
 
     return {

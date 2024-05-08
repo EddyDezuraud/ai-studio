@@ -7,6 +7,11 @@ const rgbStringToHex = (rgb: string): string => {
     if(!rgb) return rgb;
     const [r, g, b] = rgbStringToRgbArray(rgb);
     return rgbToHex(r, g, b);
+};
+
+const getColorIntensity = (r: number, g: number, b: number): number => {
+    const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    return 1 - (luminance / 255);
 }
 
 const filterSameColors = (colors: string[], mainColor: string): {main: string, colors: string[]} => { 
@@ -31,10 +36,8 @@ const filterSameColors = (colors: string[], mainColor: string): {main: string, c
         // convert to hsl to sort by saturation
         const [r1, g1, b1] = rgbStringToRgbArray(a[0]);
         const [r2, g2, b2] = rgbStringToRgbArray(b[0]);
-        const hsl1 = rgbToHsl(r1, g1, b1);
-        const hsl2 = rgbToHsl(r2, g2, b2);
 
-        return (hsl2[1] - hsl2[2]) - (hsl1[1] - hsl1[2]);
+        return getColorIntensity(r2, g2, b2) - getColorIntensity(r1, g1, b1);
     });
     
     const main = sortedCloseHueColors[0];
@@ -49,7 +52,10 @@ const filterSameColors = (colors: string[], mainColor: string): {main: string, c
  */
 const getMostRepresentedColor = async (base64Image: string): Promise<string[]> => {
 
-    if(!base64Image) return new Array(3).fill('');
+    if(!base64Image) {
+        console.error('No image provided');
+        return new Array(3).fill('');
+    }
 
     const image = await jimp.read(Buffer.from(base64Image.split(',')[1], 'base64'));
 
@@ -69,8 +75,10 @@ const getMostRepresentedColor = async (base64Image: string): Promise<string[]> =
         continue;
       }
 
+      const maxLum = 700;
+
       // Définir une plage pour les couleurs proches du blanc
-      const isNearWhite = r >= 239 && g >= 239 && b >= 239;
+      const isNearWhite = (r + g + b) > maxLum;
       if (isNearWhite) {
         continue;
       }
@@ -80,7 +88,6 @@ const getMostRepresentedColor = async (base64Image: string): Promise<string[]> =
     }
   
     const sortedColors = Object.entries(colorCounts).sort((a, b) => b[1] - a[1]);
-
     const colorsToKeep = sortedColors.map(([color]) => color);
 
     const { main: main1, colors: colorsW1 } = filterSameColors(colorsToKeep, colorsToKeep[0]);

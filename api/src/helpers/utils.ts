@@ -2,6 +2,8 @@ import puppeteer, {Page, ElementHandle} from 'puppeteer';
 import tinycolor from 'tinycolor2';
 import sharp from 'sharp';
 import { PolynomialRegression } from 'ml-regression-polynomial';
+import axios, { AxiosResponse } from 'axios';
+import fs from 'fs';
 
 const getUserAgent = () => {
   const agents = [
@@ -307,7 +309,45 @@ const hslToHex = (h: number, s: number, l: number) => {
 
 const rgbStringToRgbArray = (rgbString: string): number[] => {
   return rgbString.replace('rgb(', '').replace(')', '').split(',').map(Number);
-}
+};
+
+const getImageData = async (imgSrc: string): Promise<{ metadata: sharp.Metadata, imgBuffer: Buffer }> => {
+  try {
+    let imgBuffer = Buffer.from(imgSrc, 'base64');
+
+    // deal with url images and base64 images
+    if (imgSrc.startsWith('http')) {
+      const response = await fetch(imgSrc);
+      const buffer = await response.arrayBuffer();
+      imgBuffer = Buffer.from(buffer);
+    } else if (imgSrc.startsWith('data:image')) {
+      const uri = imgSrc.split(';base64,').pop();
+      if (!uri) {
+        throw new Error('Invalid base64 image');
+      }
+      imgBuffer = Buffer.from(uri, 'base64');
+    }
+
+    const metadata = await sharp(imgBuffer).metadata();
+
+    return {metadata, imgBuffer}
+    
+  } catch (err) {
+    console.error(imgSrc, err);
+    throw err;
+  }
+};
+
+const convertImgSrcToBase64 = async (imgSrc: string): Promise<string> => {
+  try {
+    const {metadata, imgBuffer} = await getImageData(imgSrc);
+
+    return `data:image/${metadata.format};base64,${imgBuffer.toString('base64')}`;
+
+  } catch (error) {
+    throw new Error(`file ${imgSrc} no exist ❌`)
+  }
+};
 
 export { 
   isInternalLink, 
@@ -326,5 +366,6 @@ export {
   hslToHex,
   rgbToHex,
   hslToRgb,
-  rgbStringToRgbArray
+  rgbStringToRgbArray,
+  convertImgSrcToBase64
 };

@@ -20,7 +20,8 @@ const isPending = computed(() => status.value === 'pending');
 const {data, status, error, execute} = await useFetch<StylesConfig>('/api', {
     baseURL: 'http://localhost:3033',
     query: {
-        url: queryUrl
+        url: queryUrl,
+        lang: 'fr'
     },
     immediate: false
 });
