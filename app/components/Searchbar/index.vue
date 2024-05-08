@@ -1,9 +1,10 @@
 <template>
   <div :class="$style.wrapper">
     <form @submit.prevent="submitForm" :class="$style.form">
-        <input v-model="url" type="text" placeholder="Search for a url" />
+        <input v-model="query" type="text" :placeholder="mode === 'url' ? 'Search for a url' : 'Search for a company name'" />
         <button :class="$style.button">
-            <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div v-if="pending" :class="$style.loader"></div>
+            <svg v-else width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 7H15" stroke="#43565E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M9 13L15 7" stroke="#43565E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M9 1L15 7" stroke="#43565E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -11,10 +12,10 @@
         </button>  
     </form>
     <div :class="$style.tabs">
-      <button :class="$style.tab">
+      <button @click="mode = 'url'" :class="[$style.tab, {[$style.active] : mode === 'url'}]">
         Search by URL
       </button>
-      <button :class="$style.tab">
+      <button @click="mode = 'name'" :class="[$style.tab, {[$style.active] : mode === 'name'}]">
         Search by name
       </button>
     </div>
@@ -31,7 +32,8 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const url = ref('')
+const query = ref('')
+const mode = ref('url');
 const error = ref(false);
 
 const emit = defineEmits(['submit'])
@@ -48,9 +50,9 @@ const isValidUrl = (urlString: string): boolean => {
 
 const submitForm = () => {
   if(props.pending) return;
-  
-  if (isValidUrl(url.value)) {
-    emit('submit', url.value)
+
+  if (isValidUrl(query.value)) {
+    emit('submit', {query: query.value, mode: mode.value})
   } else {
     error.value = true;
   }
@@ -65,6 +67,10 @@ const submitForm = () => {
     margin: 0 auto;
     position: relative;
     margin-bottom: 20px;
+}
+
+.form {
+    position: relative;
 }
 
 input {
@@ -95,5 +101,43 @@ input {
     &:hover {
         color: #0a0b0c;
     }
+}
+
+.tabs {
+  display: flex;
+  padding-left: 10px;
+}
+
+.tab {
+  cursor: pointer;
+  background: transparent;
+  border-radius: 0 0 4px 4px;
+  border: none;
+  outline: none;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--dark-100);
+
+  &.active {
+    color: var(--dark);
+    background: #ebeef180;
+  }
+}
+
+// small loader
+.loader {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 </style>
