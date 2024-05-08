@@ -19,7 +19,7 @@
         width: 1000px;
         aspect-ratio: 1/1;
         border-radius: 50%;
-        background: radial-gradient(var(--brand-color-primary), var(--brand-color-primary-0), var(--brand-color-primary-0));
+        background: radial-gradient(var(--primary-color), var(--primary-color-0), var(--primary-color-0));
         transform: translate(-50%, -50%);
         filter: blur(20px);
         opacity: 0.2;

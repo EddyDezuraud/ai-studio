@@ -305,8 +305,22 @@ const hslToHex = (h: number, s: number, l: number) => {
   return rgbToHex(rgb[0], rgb[1], rgb[2]);
 };
 
-const rgbStringToRgbArray = (rgbString: string): number[] => {
-  return rgbString.replace('rgb(', '').replace(')', '').split(',').map(Number);
+const rgbStringToRgbArray = (rgbString: string | undefined): number[] => {
+  if (!rgbString || !rgbString.startsWith('rgb(') || !rgbString.endsWith(')')) {
+    return [0,0,0]; // Retourne null si la chaîne d'entrée est invalide
+  }
+
+  const rgbValues = rgbString
+    .slice(4, -1) // Supprime "rgb(" et ")"
+    .split(',') // Divise les valeurs RGB séparées par des virgules
+    .map(Number); // Convertit chaque valeur en nombre
+
+  // Vérifie si toutes les valeurs RGB sont des nombres valides
+  if (rgbValues.some(isNaN)) {
+    return [0,0,0]; // Retourne null si une valeur RGB n'est pas un nombre
+  }
+
+  return rgbValues;
 };
 
 const getImageData = async (imgSrc: string): Promise<{ metadata: sharp.Metadata, imgBuffer: Buffer }> => {

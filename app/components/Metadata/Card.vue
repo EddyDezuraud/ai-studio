@@ -34,7 +34,7 @@ const props = defineProps<{
 .wrapper {
     border-radius: var(--border-radius);
     border: var(--border);
-    width: 525px;
+    width: 455px;
     overflow: hidden;
 }
 
@@ -76,7 +76,8 @@ const props = defineProps<{
 
 .title {
     font-size: 32px;
-    font-weight: 900;
+    font-weight: 700;
+    color: var(--dark)
 }
 
 .description {
@@ -84,5 +85,6 @@ const props = defineProps<{
     margin-top: 8px;
     font-size: 14px;
     font-weight: 500;
+    color: var(--dark-900);
 }
 </style>

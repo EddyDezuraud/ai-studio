@@ -4,8 +4,8 @@
             <MetadataCard v-bind="metadata" />
             <div :class="$style.right">
                 <div :class="$style.topRight">
-                    <CompanyImages :images="images" />
                     <CompanyEmployees :employees :linkedin-url="linkedinUrl" />
+                    <CompanyImages :images="images" />
                 </div>
             </div>
         </div>

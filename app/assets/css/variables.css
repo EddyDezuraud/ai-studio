@@ -1,10 +1,13 @@
 :root {
     --border-radius: 20px;
     --primary-color: #8867FD;
+    --primary-color-0: #8867FD00;
     --border: 1px solid #EBEEF1;
     --dark: #140C41;
     --dark-900: #8D86AB;
     --bento-gap: 24px;
+
+    --bento-line-height: 500px;
 
     --brand-color-primary: #8867FD;
     --brand-color-primary-100: #8867FD10;

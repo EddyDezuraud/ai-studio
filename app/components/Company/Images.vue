@@ -1,9 +1,7 @@
 <template>
     <div :class="$style.wrapper">
-        <div :class="$style.carousel" class="hide-x-bar">
-            <div v-for="image in images" :key="image.src" :class="$style.image">
-                <img :src="image.src" :alt="image.alt">
-            </div>
+        <div :class="$style.grid">
+            <div v-for="image in images" :key="image.src" :class="$style.image" :style="{background: `url(${image.src})`, backgroundSize: 'cover', backgroundPosition: 'center'}"></div>
         </div>
     </div>
 </template>
@@ -23,29 +21,24 @@ defineProps<Props>();
     width: 100%;
     overflow: hidden;
     border-radius: var(--border-radius);
-    height: 250px;
+    height: var(--bento-line-height);
 }
 
-.carousel {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: none;
-    -webkit-overflow-scrolling: touch;
-    height: calc(100% + 20px);
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0px;
+    height: 100%;
 
-    img {
-        max-height: 100%;
+    > * {
+        grid-column: span 2;
     }
 }
 
 .image {
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-}
-
-.wrapper {
     width: 100%;
-    overflow: hidden;
+    height: 100%;
+    border-radius: 0px;
+    display: block;
 }
 </style>
