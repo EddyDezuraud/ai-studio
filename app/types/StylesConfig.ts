@@ -118,6 +118,11 @@ interface Image {
   source: string;
 }
 
+interface Screenshots {
+  desktop: string;
+  mobile: string;
+}
+
 interface StylesConfig {
   metaData: Metadata;
   colors: Colors;
@@ -127,6 +132,7 @@ interface StylesConfig {
   block: Block;
   socials: Socials;
   images: Image[];
+  screenshots: Screenshots;
 }
 
-export type { StylesConfig, Colors, Color, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo, Linkedin, Socials, Employee, Image};
+export type { StylesConfig, Colors, Color, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo, Linkedin, Socials, Employee, Image, Screenshots};

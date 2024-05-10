@@ -14,7 +14,7 @@
         </div>
 
         <div>
-            <WebsiteResponsive />
+            <WebsiteResponsive :screenshots="config.screenshots" />
         </div>
         
     </div>

@@ -5,6 +5,7 @@ import { getColors, getMostRepresentedColor } from './colorsService';
 import { getLinkedinData } from './linkedinService';
 import { getImages } from './imagesService';
 import { getCompanyDescription, getWebsite } from './companyService';
+import { getScreenshots } from './websiteService';
 
 const styleConfig = async (query: string, mode:'url' | 'name', lang: string): Promise<StylesConfig> => {
 
@@ -76,7 +77,6 @@ const styleConfig = async (query: string, mode:'url' | 'name', lang: string): Pr
     //8. Extract logo colors
     const lnkImage = socials.linkedin?.logo;
     const logoColors = await getMostRepresentedColor(lnkImage);
-    console.log('logoColors done ✅');
 
     if(logoColors && logoColors.length > 0) {
         colors.primary = logoColors[0];
@@ -85,12 +85,17 @@ const styleConfig = async (query: string, mode:'url' | 'name', lang: string): Pr
         colors.logo = logoColors.map(color => ({hex: color, description: 'logo'}));
     }
     colors.list = colors.list.splice(0, 5);
+    console.log('logoColors done ✅');
 
 
     //9. Extract images
     const images = await getImages(metaData.name, lang);
+    console.log('images done ✅');
 
-    // Return the styles config object
+
+
+    //10. Extract screenshots
+    const screenshots = await getScreenshots(query);
 
 
     // define primary and secondary buttons
@@ -113,7 +118,8 @@ const styleConfig = async (query: string, mode:'url' | 'name', lang: string): Pr
         metaData,
         colors,
         socials,
-        images
+        images,
+        screenshots
     } as StylesConfig;
 }
 
