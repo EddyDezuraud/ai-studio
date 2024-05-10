@@ -21,12 +21,11 @@ const getImages = async (name: string, lang: string): Promise<Image[]> => {
 
     const query = `${name}+${terms}`;
     
-    const url = `https://www.google.com/search?q=${query}&tbm=isch`;
-
     const options = {
         limit: 3,
         imgData: false,
-        metadata: false
+        metadata: false,
+        engine: 'puppeteer'
     };
 
     const images = await scrapeImages(query, options)

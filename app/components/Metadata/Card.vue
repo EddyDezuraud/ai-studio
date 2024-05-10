@@ -1,6 +1,6 @@
 <template>
     <div :class="$style.wrapper">
-        <div :class="$style.image" :style="`background-image: url(${image})`"></div>
+        <div :class="$style.image" :style="{ backgroundImage: `url('${image}')` }"></div>
         <div :class="[$style.logo, {[$style.full] : logo.type === 'social'}]">
             <div v-if="logo.type === 'svg'" :class=$style.svg v-html="logo.src"></div>
             <img v-else :src="logo.src" :alt="`Logo ${name}`">

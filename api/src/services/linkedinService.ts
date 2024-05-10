@@ -28,11 +28,52 @@ const getClientLinkedinName = async (clientName: string): Promise<string> => {
     return linkedinUrl;
 }
 
+const getCompanyLogo = async (companyName: string): Promise<{logo: string, linkedinUrl: string}> => {
+    // Use cheerio to search google results with query "companyName logo"
+    const query = `${companyName.replace(/&/g, '%26')} site:linkedin.com logo 200x200`;
+    const searchUrl = `https://www.google.com/search?q=${query}&udm=2`;
+
+    const response = await axios.get(searchUrl, {
+        headers: {
+            'User-Agent': getUserAgent()
+        }
+    });
+
+    const $ = cheerio.load(response.data);
+    const linkedinUrl = $('.eA0Zlc').first().attr('data-lpage');
+    const docid = $('.eA0Zlc').first().attr('data-ref-docid');
+    const tbnid = $('.eA0Zlc').first().attr('data-docid');
+    const googleImageLogoUrl = `https://www.google.com/imgres?docid=${docid}&tbnid=${tbnid}`;
+
+    const logoPageResponse = await axios.get(googleImageLogoUrl, {
+        headers: {
+            'User-Agent': getUserAgent()
+        }
+    });
+
+    const $2 = cheerio.load(logoPageResponse.data);
+
+    const logo = $2('.p7sI2 img').first().attr('src');
+
+    return {
+        logo: logo ? logo : '',
+        linkedinUrl: linkedinUrl ? linkedinUrl : ''
+    };
+}
+
 const crawlForLogo = async (companyName: string): Promise<{logo: string, linkedinUrl: string}> => {
+
+    const googleSearch = await getCompanyLogo(companyName);
+    if(googleSearch.logo) {
+        if(googleSearch.logo.startsWith('data:image')) {
+            return {logo: googleSearch.logo, linkedinUrl: googleSearch.linkedinUrl};
+        }
+        const logo64 = await convertImgSrcToBase64(googleSearch.logo);
+        return {logo: logo64, linkedinUrl: googleSearch.linkedinUrl};
+    }
 
     const url = `https://www.bing.com/images/search?q=${companyName}+logo+site%3Alinkedin.com&qs=n&form=QBIR&qft=+filterui%3Aimagesize-custom_200_200&sp=-1&lq=0&pq=${companyName}+logo+site%3Alinkedin.com`
     
-
     const response = await axios.get(url, {
         headers: {
             'User-Agent': getUserAgent()

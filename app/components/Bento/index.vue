@@ -12,6 +12,10 @@
         <div>
             <Colors :colors="config.colors" />
         </div>
+
+        <div>
+            <WebsiteResponsive />
+        </div>
         
     </div>
 </template>

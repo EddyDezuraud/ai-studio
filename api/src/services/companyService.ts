@@ -28,7 +28,7 @@ const getCompanyDescription = async (companyName: string): Promise<string> => {
 
 const getWebsite = async (companyName: string): Promise<string> => {
     // Use cheerio to search google results with query "companyName"
-    const query = `${companyName} site officiel`;
+    const query = `${companyName.replace(/&/g, '%26')} site officiel`;
     const searchUrl = `https://www.google.com/search?q=${query}`;
 
     const response = await axios.get(searchUrl, {

@@ -1,7 +1,7 @@
 <template>
     <header :class="$style.wrapper">
         <h1 :class="$style.label">Introducing <span>AI Studio</span></h1>
-        <h2 :class="$style.title">A new way to styleguide</h2>
+        <h2 :class="$style.title">Your AI-Powered Design Handbook</h2>
     </header>
 </template>
 
@@ -10,6 +10,9 @@
     padding: 120px 0;
     text-align: center;
     color: var(--dark);
+    display: flex;
+    gap: 35px;
+    flex-direction: column;
 
     &::before {
         position: absolute;
@@ -41,10 +44,9 @@
 }
 
 .title {
-    font-size: 64px;
+    font-size: 48px;
     font-weight: 700;
     display: block;
-    margin-top: 25px;
 }
 
 </style>
