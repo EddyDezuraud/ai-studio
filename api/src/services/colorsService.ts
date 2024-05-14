@@ -17,7 +17,7 @@ const getColorIntensity = (r: number, g: number, b: number): number => {
 const filterSameColors = (colors: string[], mainColor: string): {main: string, colors: string[]} => { 
     const [mainR, mainG, mainB] = rgbStringToRgbArray(mainColor);
     const mainHsl = rgbToHsl(mainR, mainG, mainB);
-    const threshold = 10;
+    const threshold = 15;
 
     // list of close hue colors from the main color
     const closeHueColors = colors.filter((color) => {
@@ -88,7 +88,12 @@ const getMostRepresentedColor = async (base64Image: string): Promise<string[]> =
     }
   
     const sortedColors = Object.entries(colorCounts).sort((a, b) => b[1] - a[1]);
-    const colorsToKeep = sortedColors.map(([color]) => color);
+
+    // delete colors that are < 5% of the total
+    const threshold = sortedColors.length * 0.05;
+    const filteredColors = sortedColors.filter(([_, count]) => count > threshold);
+
+    const colorsToKeep = filteredColors.map(([color]) => color);
 
     const { main: main1, colors: colorsW1 } = filterSameColors(colorsToKeep, colorsToKeep[0]);
     const { main: main2, colors: colorsW2 } = filterSameColors(colorsW1, colorsW1[1]);

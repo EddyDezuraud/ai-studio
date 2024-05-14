@@ -100,8 +100,14 @@ interface Linkedin {
   employees: Employee[];
 }
 
+interface Wikipedia {
+  url: string;
+  logo: string;
+}
+
 interface Socials {
   linkedin?: Linkedin;
+  wikipedia?: Wikipedia;
 }
 
 interface Metadata {
@@ -134,4 +140,4 @@ interface StylesConfig {
   screenshots: Screenshots;
 }
 
-export { StylesConfig, Colors, Color, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo, Linkedin, Socials, Employee, Image, Screenshots};
+export { StylesConfig, Colors, Color, Body, ButtonStyles, InputStyles, FormButtons, Form, TextStyles, Texts, Block, Metadata, Logo, Linkedin, Socials, Employee, Image, Screenshots, Wikipedia};

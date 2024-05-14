@@ -52,7 +52,7 @@ const getScreenshots = async (url: string): Promise<Screenshots> => {
 
     const page = await browser.newPage();
     await page.goto(url);
-    await acceptCookies(page);
+    // await acceptCookies(page);
 
     await page.setViewport({width:1920, height:1080});
 

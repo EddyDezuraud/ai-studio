@@ -6,6 +6,7 @@ import { getLinkedinData } from './linkedinService';
 import { getImages } from './imagesService';
 import { getCompanyDescription, getWebsite } from './companyService';
 import { getScreenshots } from './websiteService';
+import { getWikipediaMetadata } from './wikipediaService';
 
 const styleConfig = async (query: string, mode:'url' | 'name', lang: string): Promise<StylesConfig> => {
 
@@ -68,15 +69,16 @@ const styleConfig = async (query: string, mode:'url' | 'name', lang: string): Pr
     await browser.close();
 
     const socials = {
-        linkedin: {logo: ''}
+        linkedin: {logo: ''},
+        wikipedia: await getWikipediaMetadata(metaData.name)
     }
 
     socials.linkedin = await getLinkedinData(metaData.name);
     console.log('socials.linkedin done ✅');
     
     //8. Extract logo colors
-    const lnkImage = socials.linkedin?.logo;
-    const logoColors = await getMostRepresentedColor(lnkImage);
+    const logoImg = socials.wikipedia.logo || socials.linkedin.logo;
+    const logoColors = await getMostRepresentedColor(logoImg);
 
     if(logoColors && logoColors.length > 0) {
         colors.primary = logoColors[0];
